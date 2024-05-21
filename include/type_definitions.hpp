@@ -41,4 +41,15 @@ typedef Matrix<double,13,1> state13_t;
 
 typedef Quaternion<double> quat_t;
 
+typedef struct Aero_coeff_{
+    double moment_coeff;
+    double lift_coeff;
+} Aero_coeff;
+
+typedef struct Inertial_param_{
+    double m;
+    mat33_t J;
+    mat31_t r_offset;
+} Inertial_param;
+
 #endif

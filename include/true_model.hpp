@@ -16,21 +16,20 @@ class True_model{
     True_model();
 
     True_model(QuadModel model,
-    double m, mat33_t J, mat31_t r_offset,
-    double lift_coeff, 
-    double moment_coeff, double l);
+    Inertial_param& inertial_param,
+    Aero_coeff& aero_coeff, double l);
 
     /**
      * Apply control inputs
     */
-    void apply_control_input(mat41_t rpm);
+    void apply_control_input(mat41_t& rpm);
 
     /**
      * Apply disturbances
     */
     void apply_disturbance(
-        mat31_t sigma_ext, 
-        mat31_t theta_ext);
+        mat31_t& sigma_ext, 
+        mat31_t& theta_ext);
 
     /**
      * Get state, time derivative of that, 
@@ -49,9 +48,7 @@ class True_model{
     private:
 
     // Inertial parameter
-    double m_;
-    mat33_t J_;
-    mat31_t r_offset_;
+    Inertial_param inertial_param_;
 
     /**
      * Control input (Four thrust)
@@ -62,7 +59,8 @@ class True_model{
      * Arm length and moment coefficient info.
     */
 
-    double l_, lift_coeff_ ,moment_coeff_;
+    double l_;
+    Aero_coeff aero_coeff_;
 
     /**
      * Thrust to wrench transformation matrix

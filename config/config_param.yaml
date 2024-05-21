@@ -1,4 +1,4 @@
-name: inertial_param
+inertial_param:
     -branch: mass
         m: 1.8
     -branch: MOI
@@ -11,11 +11,12 @@ name: inertial_param
     -branch: offset
         x:
         y:
-name: aerodynamics_param
+        z: 0
+aerodynamics_param:
     -branch: lift_coeff
         C_l:
     -branch: moment_coeff
         C_m:
-name: length_param
+length_param:
     -branch: arm_lenth
         l: 0.225

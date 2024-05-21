@@ -2,30 +2,33 @@
 
 True_model::True_model()
 {
+    t_ = 0;
+    dt_ = 0.01;
     gravity_setup();
 
     cout<<"Default setup"<<endl;
 
     model_config(model1);
 
-    r_offset_ << 0, 0, 0;
+    inertial_param_.r_offset << 0, 0, 0;
 
 }
 
 True_model::True_model(
 QuadModel model, 
-double m, mat33_t J, mat31_t r_offset,
-double lift_coeff, double moment_coeff, double l):
-m_(m), J_(J), r_offset_(r_offset),
-lift_coeff_(lift_coeff), moment_coeff_(moment_coeff),
-l_(l)
+Inertial_param& inertial_param,
+Aero_coeff& aero_coeff, double l):
+inertial_param_(inertial_param),
+aero_coeff_(aero_coeff), l_(l)
 {
+    t_ = 0;
+    dt_ = 0.01;
     gravity_setup();
 
     model_config(model);
 }
 
-void True_model::apply_control_input(mat41_t rpm)
+void True_model::apply_control_input(mat41_t& rpm)
 {
     mat61_t wrench;
     mat41_t T;
@@ -34,12 +37,12 @@ void True_model::apply_control_input(mat41_t rpm)
 
     for(int i = 0; i < 4; i++)
     {
-        T(i) = lift_coeff_ * pow(rpm(i),2);
+        T(i) = aero_coeff_.lift_coeff * pow(rpm(i),2);
     }
 
     wrench = thrust2wrench_ * T;
     collective_thrust << 0, 0, wrench(2);
-    vec2skiew(r_offset_, r_offset_skiew);
+    vec2skiew(inertial_param_.r_offset, r_offset_skiew);
 
     for(int i = 0; i < 3; i++)
     {
@@ -52,8 +55,8 @@ void True_model::apply_control_input(mat41_t rpm)
 }
 
 void True_model::apply_disturbance(
-    mat31_t sigma_ext,
-    mat31_t theta_ext)
+    mat31_t& sigma_ext,
+    mat31_t& theta_ext)
 {
     f_ += sigma_ext;
     M_ += theta_ext;
@@ -151,10 +154,11 @@ void True_model::system_dynamics(
     get_Rotm_from_quat(q, R);
 
     dpdt = v;
-    dvdt = (1/m_)*R*f_ + grav;
+    dvdt = (1/inertial_param_.m)*R*f_ + grav;
 
     get_dqdt(q, w, dqdt);
-    dwdt = J_.inverse()*(M_ - w_skiew*(J_*w));
+    dwdt = inertial_param_.J.inverse()*
+    (M_ - w_skiew*(inertial_param_.J*w));
 
     for(int i = 0; i < 3; i++)
     {
@@ -184,9 +188,7 @@ void True_model::do_rk_dopri()
             std::placeholders::_2,
             std::placeholders::_3
         ),
-        s_,
-        t_,
-        dt_
+        s_, t_, dt_
     );
     t_ += dt_;
 }
@@ -197,7 +199,7 @@ void True_model::model_config(QuadModel model)
     double sinPI4, l1, Cm;
     sinPI4 = sin(M_PI/4.0);
     l1 = l_*sinPI4;
-    Cm = moment_coeff_/lift_coeff_;
+    Cm = aero_coeff_.moment_coeff/aero_coeff_.lift_coeff;
 
     if(model == model1)
     {
