@@ -1,0 +1,18 @@
+name: inertial_param
+    -branch: mass
+        m: 
+    -branch: MOI
+        Jxx:
+        Jxy:
+        Jxz:
+        Jyy:
+        Jyz:
+        Jzz:
+name: aerodynamics_param
+    -branch: lift_coeff
+        C_l:
+    -branch: moment_coeff
+        C_m:
+name: length_param
+    -branch: arm_lenth
+        l:
