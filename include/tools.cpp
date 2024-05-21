@@ -1,5 +1,24 @@
 #include "tools.hpp"
 
+void get_dqdt(quat_t q, mat31_t w, quat_t& dqdt)
+{
+    quat_t w_quat;
+    quat_t q_otimes_w;
+
+    w_quat.w() = 0;
+    w_quat.x() = w(0);
+    w_quat.y() = w(1);
+    w_quat.z() = w(2);
+
+    otimes(q, w_quat, q_otimes_w);
+
+    dqdt.w() = 0.5*q_otimes_w.w();
+    dqdt.x() = 0.5*q_otimes_w.x();
+    dqdt.y() = 0.5*q_otimes_w.y();
+    dqdt.z() = 0.5*q_otimes_w.z();
+}
+
+
 /**
  * Conjugate of the quaternion
  * param: quat_t q, quat_t& q_res
@@ -7,12 +26,10 @@
 */
 void conjugate(quat_t q, quat_t& q_res)
 {
-
     q_res.w() = q.w();
     q_res.x() = -q.x();
     q_res.y() = -q.y();
     q_res.z() = -q.z();
-
 }
 
 /**
@@ -22,7 +39,6 @@ void conjugate(quat_t q, quat_t& q_res)
 */
 void otimes(quat_t q1, quat_t q2, quat_t& q_res)
 {
-
     double real;
     mat31_t q1_vec, q2_vec;
     mat33_t q1_skiew_sym_mat;
@@ -40,12 +56,10 @@ void otimes(quat_t q1, quat_t q2, quat_t& q_res)
     + q2.w()*q1_vec
     + q1_skiew_sym_mat*q2_vec;
 
-
     q_res.w() = real;
     q_res.x() = q_res_vec(0);
     q_res.y() = q_res_vec(1);
     q_res.z() = q_res_vec(2);
-    
 }
 
 /**
@@ -60,9 +74,7 @@ void get_Rotm_from_quat(quat_t q, mat33_t& rotm_res)
     mat31_t q_vec;
     mat33_t skiew_sym;
 
-    eye_m << 1, 0, 0,
-            0, 1, 0,
-            0, 0, 1;
+    eye_m.setIdentity();
 
     quat2quat_vec(q, q_vec);
     vec2skiew(q_vec,skiew_sym);
@@ -70,7 +82,6 @@ void get_Rotm_from_quat(quat_t q, mat33_t& rotm_res)
     rotm_res = (q.w()*q.w() - q_vec.transpose()*q_vec)*eye_m
     + 2 * q_vec * q_vec.transpose()
     + 2 * q.w() * skiew_sym;
-
 }
 
 /**
@@ -79,11 +90,9 @@ void get_Rotm_from_quat(quat_t q, mat33_t& rotm_res)
 */
 void vec2skiew(mat31_t vec, mat33_t& skiew_sym_mat)
 {
-
     skiew_sym_mat << 0, -vec(0), vec(1),
                     vec(0), 0, -vec(2),
                     -vec(1), vec(2), 0;
-    
 }
 
 /**
@@ -92,9 +101,7 @@ void vec2skiew(mat31_t vec, mat33_t& skiew_sym_mat)
 */
 void quat2quat_vec(quat_t q, mat31_t& q_vec)
 {
-
     q_vec << q.x(), q.y(), q.z();
-
 }
 
 /**
@@ -114,5 +121,17 @@ void quat2unit_quat(quat_t q, quat_t &unit_q)
     unit_q.y() = q.y()/den;
     unit_q.z() = q.z()/den;
     unit_q.w() = q.w()/den;
+}
 
+/**
+ * Signum function
+*/
+double signum(double num)
+{
+    return num > 0 ? 1.0:-1.0;
+}
+
+void gravity_setup()
+{
+    grav << 0, 0, -9.81;
 }
