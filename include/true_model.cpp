@@ -8,12 +8,17 @@ True_model::True_model()
 
     model_config(model1);
 
+    r_offset_ << 0, 0, 0;
+
 }
 
-True_model::True_model(QuadModel model, double l, 
-double lift_coeff, double moment_coeff):
-l_(l), lift_coeff_(lift_coeff), 
-moment_coeff_(moment_coeff)
+True_model::True_model(
+QuadModel model, 
+double m, mat33_t J, mat31_t r_offset,
+double lift_coeff, double moment_coeff, double l):
+m_(m), J_(J), r_offset_(r_offset),
+lift_coeff_(lift_coeff), moment_coeff_(moment_coeff),
+l_(l)
 {
     gravity_setup();
 
@@ -24,6 +29,8 @@ void True_model::apply_control_input(mat41_t rpm)
 {
     mat61_t wrench;
     mat41_t T;
+    mat33_t r_offset_skiew;
+    mat31_t collective_thrust;
 
     for(int i = 0; i < 4; i++)
     {
@@ -31,12 +38,17 @@ void True_model::apply_control_input(mat41_t rpm)
     }
 
     wrench = thrust2wrench_ * T;
+    collective_thrust << 0, 0, wrench(2);
+    vec2skiew(r_offset_, r_offset_skiew);
 
     for(int i = 0; i < 3; i++)
     {
         f_(i) = wrench(i);
         M_(i) = wrench(i+3);
     }
+
+    M_ += r_offset_skiew * collective_thrust;
+
 }
 
 void True_model::apply_disturbance(
@@ -84,12 +96,14 @@ mat31_t& True_model::get_vel_from_state()
 
 quat_t& True_model::get_quat_from_state()
 {
-    quat_t q;
+    quat_t q, q_unit;
 
     q.w() = s_(6);
     q.x() = s_(7);
     q.y() = s_(8);
     q.z() = s_(9);
+
+    quat2unit_quat(q,q_unit);
     
     return q;
 }
@@ -109,24 +123,72 @@ void True_model::system_dynamics(
     double t
 )
 {
-    mat31_t p,v;
-    quat_t dqdt, q;
-    mat31_t w;
-    mat33_t R;
+    mat31_t p,v,dpdt,dvdt;
+    quat_t q, q_unit, dqdt;
+    mat31_t w, dwdt;
+    mat33_t R, w_skiew;
 
-    p = get_pos_from_state();
-    v = get_vel_from_state();
+    for(int i = 0; i < 3; i++)
+    {
+        p(i) = s(i);
+        v(i) = s(i+3);
+    }
 
-    q = get_quat_from_state();
-    w = get_angular_vel_from_state();
+    q.w() = s(6);
+    q.x() = s(7);
+    q.y() = s(8);
+    q.z() = s(9);
+    
+    quat2unit_quat(q, q_unit);
+
+    for(int i = 0; i < 3; i++)
+    {
+        w(i) = s(i+10);
+    }
+
+    vec2skiew(w, w_skiew);
 
     get_Rotm_from_quat(q, R);
+
+    dpdt = v;
+    dvdt = (1/m_)*R*f_ + grav;
+
+    get_dqdt(q, w, dqdt);
+    dwdt = J_.inverse()*(M_ - w_skiew*(J_*w));
+
+    for(int i = 0; i < 3; i++)
+    {
+        dsdt(i) = p(i);
+        dsdt(i+3) = v(i);
+    }
+
+    dsdt(6) = q.w();
+    dsdt(7) = q.x();
+    dsdt(8) = q.y();
+    dsdt(9) = q.z();
+
+    for(int i = 0; i < 3; i++)
+    {
+        dsdt(i+10) = dwdt(i);
+    }
 
 }
 
 void True_model::do_rk_dopri()
 {
-
+    rk_dopri5.do_step(
+        std::bind(
+            &True_model::system_dynamics,
+            &(*this),
+            std::placeholders::_1,
+            std::placeholders::_2,
+            std::placeholders::_3
+        ),
+        s_,
+        t_,
+        dt_
+    );
+    t_ += dt_;
 }
 
 void True_model::model_config(QuadModel model)

@@ -15,9 +15,10 @@ class True_model{
 
     True_model();
 
-    True_model(QuadModel model, double l,
+    True_model(QuadModel model,
+    double m, mat33_t J, mat31_t r_offset,
     double lift_coeff, 
-    double moment_coeff);
+    double moment_coeff, double l);
 
     /**
      * Apply control inputs
