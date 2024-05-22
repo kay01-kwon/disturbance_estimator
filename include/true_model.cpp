@@ -151,6 +151,9 @@ void True_model::system_dynamics(
     dwdt = inertial_param_.J.inverse()*
     (M_ - w_skiew*(inertial_param_.J*w));
 
+    // For test...
+    // dwdt = inertial_param_.J.inverse()*M_;
+
     for(int i = 0; i < 3; i++)
     {
         dsdt(i) = dpdt(i);
@@ -191,6 +194,11 @@ void True_model::model_config(QuadModel model)
     sinPI4 = sin(M_PI/4.0);
     l1 = l_*sinPI4;
     Cm = aero_coeff_.moment_coeff/aero_coeff_.lift_coeff;
+
+    /**
+     * Control input and state initalization
+     * s_(6) corresponds to w component of quaternion
+    */
 
     f_.setZero();
     M_.setZero();

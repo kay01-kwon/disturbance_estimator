@@ -3,10 +3,10 @@ inertial_param:
         m: 1.8
     MOI:
         Jxx: 0.01
-        Jxy: 0.000001
-        Jxz: 0.000001
+        Jxy: 0.00000
+        Jxz: 0.00000
         Jyy: 0.01
-        Jyz: 0.000001
+        Jyz: 0.00000
         Jzz: 0.03
     offset:
         x: 0.

@@ -90,9 +90,9 @@ void get_Rotm_from_quat(quat_t q, mat33_t& rotm_res)
 */
 void vec2skiew(mat31_t vec, mat33_t& skiew_sym_mat)
 {
-    skiew_sym_mat << 0, -vec(0), vec(1),
-                    vec(0), 0, -vec(2),
-                    -vec(1), vec(2), 0;
+    skiew_sym_mat << 0, -vec(2), vec(1),
+                    vec(2), 0, -vec(0),
+                    -vec(1), vec(0), 0;
 }
 
 /**
