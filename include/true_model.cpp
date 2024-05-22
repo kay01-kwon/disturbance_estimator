@@ -153,8 +153,8 @@ void True_model::system_dynamics(
 
     for(int i = 0; i < 3; i++)
     {
-        dsdt(i) = p(i);
-        dsdt(i+3) = v(i);
+        dsdt(i) = dpdt(i);
+        dsdt(i+3) = dvdt(i);
     }
 
     dsdt(6) = dqdt.w();
@@ -191,6 +191,11 @@ void True_model::model_config(QuadModel model)
     sinPI4 = sin(M_PI/4.0);
     l1 = l_*sinPI4;
     Cm = aero_coeff_.moment_coeff/aero_coeff_.lift_coeff;
+
+    f_.setZero();
+    M_.setZero();
+    s_.setZero();
+    s_(6) = 1.0;
 
     if(model == model1)
     {

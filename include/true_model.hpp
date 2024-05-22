@@ -31,6 +31,8 @@ class True_model{
         mat31_t& sigma_ext, 
         mat31_t& theta_ext);
 
+    void do_rk_dopri();
+
     /**
      * Get state, time derivative of that, 
      * and time, respectively
@@ -98,9 +100,6 @@ class True_model{
         const state13_t& s, 
         state13_t& dsdt, 
         double t);
-
-    void do_rk_dopri();
-
 
 };
 
