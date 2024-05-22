@@ -3,15 +3,15 @@ inertial_param:
         m: 1.8
     MOI:
         Jxx: 0.01
-        Jxy: 0
-        Jxz: 0
+        Jxy: 0.000001
+        Jxz: 0.000001
         Jyy: 0.01
-        Jyz: 0
+        Jyz: 0.000001
         Jzz: 0.03
     offset:
-        x: 0
-        y: 0
-        z: 0
+        x: 0.3
+        y: 0.2
+        z: 0.1
 aerodynamics_param:
     lift_coeff:
         C_l: 1

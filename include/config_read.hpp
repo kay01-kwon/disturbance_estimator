@@ -7,6 +7,7 @@
 
 using std::string;
 using std::cerr;
+using YAML::Node;
 
 class Config_Read{
 
@@ -16,19 +17,26 @@ class Config_Read{
 
     Config_Read(string& file_name);
 
-    void load_yaml_file();
-
-    void get_Inertial_param_from_yaml(Inertial_param& inertial_param);
-
-    void get_r_offset_from_yaml(mat31_t& r_offset_param);
-
-    void get_Aero_coeff_from_yaml(Aero_coeff& aero_coeff);
-
-    void get_arm_length(double& l);
+    void get_param(Inertial_param& inertial_param,
+    Aero_coeff& aero_coeff, double& arm_length);
 
     private:
 
     string file_name_;
+
+    Inertial_param inertial_param_;
+
+    Aero_coeff aero_coeff_;
+
+    double l_;
+
+    void load_yaml_file();
+
+    void get_Inertial_param_from_yaml(Node& config);
+
+    void get_Aero_coeff_from_yaml(Node& config);
+
+    void get_arm_length_from_yaml(Node& config);
 
 };
 
