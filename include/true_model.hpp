@@ -39,11 +39,11 @@ class True_model{
     state13_t& get_dsdt();
     double& get_t();
 
-    mat31_t& get_pos_from_state();
-    mat31_t& get_vel_from_state();
+    void get_pos_from_state(mat31_t& p);
+    void get_vel_from_state(mat31_t& v);
 
-    quat_t& get_quat_from_state();
-    mat31_t& get_angular_vel_from_state();
+    void get_quat_from_state(quat_t& q);
+    void get_angular_vel_from_state(mat31_t& w);
 
     private:
 
@@ -70,7 +70,7 @@ class True_model{
     /**
      * force and moment
     */
-    mat31_t f_, M_;
+    mat31_t f_, M_, grav;
     
 
     /**

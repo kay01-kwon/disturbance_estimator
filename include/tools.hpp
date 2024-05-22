@@ -6,8 +6,6 @@
 using std::cout;
 using std::endl;
 
-mat31_t grav;
-
 enum QuadModel{model1, model2};
 
 void get_dqdt(quat_t q, mat31_t w, quat_t& dqdt);
@@ -26,6 +24,5 @@ void quat2unit_quat(quat_t q, quat_t& unit_q);
 
 double signum(double num);
 
-void gravity_setup();
 
 #endif

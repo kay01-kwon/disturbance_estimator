@@ -4,7 +4,7 @@ True_model::True_model()
 {
     t_ = 0;
     dt_ = 0.01;
-    gravity_setup();
+    grav << 0, 0, -9.81;
 
     cout<<"Default setup"<<endl;
 
@@ -23,7 +23,7 @@ aero_coeff_(aero_coeff), l_(l)
 {
     t_ = 0;
     dt_ = 0.01;
-    gravity_setup();
+    grav << 0, 0, -9.81;
 
     model_config(model);
 }
@@ -77,47 +77,38 @@ double& True_model::get_t()
     return t_;
 }
 
-mat31_t& True_model::get_pos_from_state()
+void True_model::get_pos_from_state(mat31_t& p)
 {
-    mat31_t p;
     
     for(int i = 0; i < 3; i++)
         p(i) = s_(i);
 
-    return p;
 }
 
-mat31_t& True_model::get_vel_from_state()
+void True_model::get_vel_from_state(mat31_t& v)
 {
-    mat31_t v;
 
     for(int i = 0; i < 3; i++)
         v(i) = s_(i+3);
-    
-    return v;
 }
 
-quat_t& True_model::get_quat_from_state()
+void True_model::get_quat_from_state(quat_t& q)
 {
-    quat_t q, q_unit;
+    quat_t q_, q_unit;
+    q_.w() = s_(6);
+    q_.x() = s_(7);
+    q_.y() = s_(8);
+    q_.z() = s_(9);
 
-    q.w() = s_(6);
-    q.x() = s_(7);
-    q.y() = s_(8);
-    q.z() = s_(9);
-
-    quat2unit_quat(q,q_unit);
-    
-    return q;
+    quat2unit_quat(q_,q_unit);
+    q = q_unit;
 }
 
-mat31_t& True_model::get_angular_vel_from_state()
+void True_model::get_angular_vel_from_state(mat31_t& w)
 {
-    mat31_t w;
     w(0) = s_(10);
     w(1) = s_(11);
     w(2) = s_(12);
-    return w;
 }
 
 void True_model::system_dynamics(
@@ -151,12 +142,12 @@ void True_model::system_dynamics(
 
     vec2skiew(w, w_skiew);
 
-    get_Rotm_from_quat(q, R);
+    get_Rotm_from_quat(q_unit, R);
 
     dpdt = v;
     dvdt = (1/inertial_param_.m)*R*f_ + grav;
 
-    get_dqdt(q, w, dqdt);
+    get_dqdt(q_unit, w, dqdt);
     dwdt = inertial_param_.J.inverse()*
     (M_ - w_skiew*(inertial_param_.J*w));
 
@@ -166,10 +157,10 @@ void True_model::system_dynamics(
         dsdt(i+3) = v(i);
     }
 
-    dsdt(6) = q.w();
-    dsdt(7) = q.x();
-    dsdt(8) = q.y();
-    dsdt(9) = q.z();
+    dsdt(6) = dqdt.w();
+    dsdt(7) = dqdt.x();
+    dsdt(8) = dqdt.y();
+    dsdt(9) = dqdt.z();
 
     for(int i = 0; i < 3; i++)
     {

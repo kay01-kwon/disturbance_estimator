@@ -1,6 +1,6 @@
 #ifndef CONFIG_READ_HPP_
 #define CONFIG_READ_HPP_
-#include "tools.hpp"
+#include "type_definitions.hpp"
 #include <yaml-cpp/yaml.h>
 #include <string>
 #include <fstream>
@@ -16,19 +16,17 @@ class Config_Read{
 
     Config_Read(string& file_name);
 
-    Inertial_param& get_Inertial_param_from_yaml();
+    void load_yaml_file();
 
-    mat31_t& get_r_offset_from_yaml();
+    void get_Inertial_param_from_yaml(Inertial_param& inertial_param);
 
-    Aero_coeff& get_Aero_coeff_from_yaml();
+    void get_r_offset_from_yaml(mat31_t& r_offset_param);
 
-    double get_arm_length();
+    void get_Aero_coeff_from_yaml(Aero_coeff& aero_coeff);
 
-    ~Config_Read();
+    void get_arm_length(double& l);
 
     private:
-
-    YAML::Node config;
 
     string file_name_;
 

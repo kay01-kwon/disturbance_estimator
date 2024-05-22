@@ -130,8 +130,3 @@ double signum(double num)
 {
     return num > 0 ? 1.0:-1.0;
 }
-
-void gravity_setup()
-{
-    grav << 0, 0, -9.81;
-}

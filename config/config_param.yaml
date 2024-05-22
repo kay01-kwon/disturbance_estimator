@@ -1,22 +1,22 @@
 inertial_param:
-    -branch: mass
+    mass:
         m: 1.8
-    -branch: MOI
-        Jxx:
-        Jxy:
-        Jxz:
-        Jyy:
-        Jyz:
-        Jzz:
-    -branch: offset
-        x:
-        y:
+    MOI:
+        Jxx: 0.01
+        Jxy: 0
+        Jxz: 0
+        Jyy: 0.01
+        Jyz: 0
+        Jzz: 0.03
+    offset:
+        x: 0
+        y: 0
         z: 0
 aerodynamics_param:
-    -branch: lift_coeff
-        C_l:
-    -branch: moment_coeff
-        C_m:
+    lift_coeff:
+        C_l: 1
+    moment_coeff:
+        C_m: 1
 length_param:
-    -branch: arm_lenth
+    arm_lenth:
         l: 0.225
