@@ -24,5 +24,6 @@ void quat2unit_quat(quat_t q, quat_t& unit_q);
 
 double signum(double num);
 
+void print_params(Inertial_param& param1, Aero_coeff& param2, double& param3);
 
 #endif

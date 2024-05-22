@@ -130,3 +130,23 @@ double signum(double num)
 {
     return num > 0 ? 1.0:-1.0;
 }
+
+void print_params(Inertial_param& param1, Aero_coeff& param2, double& param3)
+{
+    cout<<"Inertial Parameter setup"<<endl;
+
+    cout<<"Mass: ";
+    cout<<param1.m<<endl;
+
+    cout<<"MOI: ";
+    cout<<param1.J<<endl;
+
+    cout<<"Aerodynamics coefficients setup "<<endl;
+    cout<<"Lift coefficient: ";
+    cout<<param2.lift_coeff<<endl;
+
+    cout<<"Moment coefficient:";
+    cout<<param2.moment_coeff<<endl;
+
+    cout<<"Arm length: "<<param3<<endl;
+}

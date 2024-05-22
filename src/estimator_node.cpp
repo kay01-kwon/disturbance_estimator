@@ -10,30 +10,16 @@ int main()
     Aero_coeff aero_coeff;
     double arm_length;
 
+
     Config_Read* config_read_ptr;
-
     config_read_ptr = new Config_Read(file_name);
-
     config_read_ptr->get_param(inertial_param, aero_coeff, arm_length);
 
-    cout<<"Inertial Parameter setup"<<endl;
-
-    cout<<"Mass: ";
-    cout<<inertial_param.m<<endl;
-
-    cout<<"MOI: ";
-    cout<<inertial_param.J<<endl;
-
-    cout<<"Aerodynamics coefficients setup "<<endl;
-    cout<<"Lift coefficient: ";
-    cout<<aero_coeff.lift_coeff<<endl;
-
-    cout<<"Moment coefficient:";
-    cout<<aero_coeff.moment_coeff<<endl;
-
-    cout<<"Arm length: "<<arm_length<<endl;
-
     delete config_read_ptr;
+
+    print_params(inertial_param, 
+    aero_coeff, 
+    arm_length);
 
     return 0;
 }

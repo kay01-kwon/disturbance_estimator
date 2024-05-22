@@ -73,12 +73,12 @@ void Config_Read::get_Inertial_param_from_yaml(Node& config)
         
         inertial_param_.r_offset << rx, ry, rz;
 
-        cout << "***************************************" << endl;
-        cout << "Mass: " << inertial_param_.m << endl;
-        cout << "MOI matrix: "<<endl;
-        cout<<inertial_param_.J<<endl;
-        cout << "offset: "<<endl;
-        cout<<inertial_param_.r_offset<<endl;
+        // cout << "***************************************" << endl;
+        // cout << "Mass: " << inertial_param_.m << endl;
+        // cout << "MOI matrix: "<<endl;
+        // cout<<inertial_param_.J<<endl;
+        // cout << "offset: "<<endl;
+        // cout<<inertial_param_.r_offset<<endl;
 
     }
 }
@@ -97,9 +97,8 @@ void Config_Read::get_Aero_coeff_from_yaml(Node& config)
         aero_coeff_.lift_coeff = C_l;
         aero_coeff_.moment_coeff = C_m;
 
-        cout << "lift coefficient: " << C_l << endl;
-        cout << "moment coefficient: " << C_m << endl;
-
+        // cout << "lift coefficient: " << C_l << endl;
+        // cout << "moment coefficient: " << C_m << endl;
     }
 }
 
@@ -110,8 +109,8 @@ void Config_Read::get_arm_length_from_yaml(Node& config)
     if(arm_length_yaml)
     {
         l_ = arm_length_yaml["arm_lenth"]["l"].as<double>();
-        cout << "Arm length: " << l_ << endl;
-        cout << "***************************************" << endl;
+        // cout << "Arm length: " << l_ << endl;
+        // cout << "***************************************" << endl;
 
     }
 
