@@ -15,6 +15,8 @@ class Lpf{
 
     Lpf(double tau);
 
+    void initialize_variables();
+
     void apply_input(mat31_t v_in);
 
     void set_time(double t);
@@ -23,14 +25,14 @@ class Lpf{
 
     private:
 
-    // vector to be filtered
-    mat31_t curr_v_, v_in_;
+    // vector to be processed
+    mat31_t curr_v_, v_in_, v_out_;
 
     // time constant
     double tau_;
 
     // Time info
-    double curr_time, prev_time, dt;
+    double curr_time_, prev_time_, dt_;
 
     /**
      * Declare rk dopri5 class
