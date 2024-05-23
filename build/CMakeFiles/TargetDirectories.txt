@@ -1,3 +1,0 @@
-/home/kay/Documents/research/estimator/build/CMakeFiles/rebuild_cache.dir
-/home/kay/Documents/research/estimator/build/CMakeFiles/edit_cache.dir
-/home/kay/Documents/research/estimator/build/CMakeFiles/test.dir
