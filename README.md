@@ -1,6 +1,6 @@
 # disturbance_estimator
 
-1. Low pass filter
+## 1. Low pass filter
 
 The filter utilizes dorpri method to process noisy data. 
 
