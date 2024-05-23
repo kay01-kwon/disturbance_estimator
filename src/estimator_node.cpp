@@ -33,8 +33,8 @@ int main()
      * Load true model
     */
 
-    True_model* true_model_ptr;
-    true_model_ptr = new True_model(model1, 
+    True_model true_model;
+    true_model = True_model(model1, 
     inertial_param, aero_coeff, arm_length);
 
     vector<double> x, y, z, vx, vy, vz;
@@ -51,15 +51,15 @@ int main()
 
     for(int i = 0; i < 100; i++)
     {
-        true_model_ptr->apply_control_input(u);
-        true_model_ptr->apply_disturbance(sigma_ext, theta_ext);
-        true_model_ptr->do_rk_dopri();
+        true_model.apply_control_input(u);
+        true_model.apply_disturbance(sigma_ext, theta_ext);
+        true_model.do_rk_dopri();
 
-        get_position(true_model_ptr, x, y, z);
-        get_velocity(true_model_ptr, vx, vy, vz);
-        get_quaternion(true_model_ptr, qw, qx, qy, qz);
-        get_angular_velocity(true_model_ptr, wx, wy, wz);
-        time_vec.push_back(true_model_ptr->get_t());
+        get_position(&true_model, x, y, z);
+        get_velocity(&true_model, vx, vy, vz);
+        get_quaternion(&true_model, qw, qx, qy, qz);
+        get_angular_velocity(&true_model, wx, wy, wz);
+        time_vec.push_back(true_model.get_t());
     }
 
 
@@ -99,9 +99,6 @@ int main()
     plt::grid(true);
 
     plt::show();
-
-
-    delete true_model_ptr;
 
     return 0;
 }

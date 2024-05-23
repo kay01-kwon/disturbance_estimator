@@ -8,7 +8,6 @@
 
 using boost::numeric::odeint::runge_kutta_dopri5;
 
-
 class True_model{
 
     public:
