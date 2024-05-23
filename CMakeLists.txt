@@ -16,8 +16,7 @@ src/estimator_node.cpp
 include/tools.cpp
 include/config_read.cpp
 include/true_model.cpp
-include/get_state.cpp
-)
+include/get_state.cpp)
 
 target_include_directories(test PRIVATE 
 ${Python3_INCLUDE_DIRS})
@@ -25,4 +24,16 @@ ${Python3_INCLUDE_DIRS})
 target_link_libraries(test 
 ${YAML_CPP_LIBRARIES}
 ${Python3_LIBRARIES} 
+)
+
+add_executable(test_lpf
+src/test_lpf.cpp
+include/low_pass_filter.cpp
+include/tools.cpp)
+
+target_include_directories(test_lpf PRIVATE
+${Python3_INCLUDE_DIRS})
+
+target_link_libraries(test_lpf
+${Python3_LIBRARIES}
 )

@@ -37,10 +37,22 @@ void Lpf::system_dynamics(const mat31_t& v,
 mat31_t& dvdt,
 double t)
 {
-    
+    dvdt = -tau_*v + tau_*v_in_;
 }
 
 void Lpf::do_rk_dopri()
 {
+    dt_ = curr_time_ - prev_time_;
+    rk_dopri5.do_step(
+        std::bind(
+            &Lpf::system_dynamics,
+            &(*this),
+            std::placeholders::_1,
+            std::placeholders::_2,
+            std::placeholders::_3
+        ),
+        v_out_, prev_time_, dt_
+    );
+    prev_time_ = curr_time_;
 
 }

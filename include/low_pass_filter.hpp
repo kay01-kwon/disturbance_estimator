@@ -1,6 +1,6 @@
 #ifndef LOW_PASS_FILTER_HPP_
 #define LOW_PASS_FILTER_HPP_
-#include "type_definitions.hpp"
+#include "tools.hpp"
 #include <boost/lambda/lambda.hpp>
 #include <boost/numeric/odeint.hpp>
 #include <boost/numeric/odeint/external/eigen/eigen.hpp>
@@ -37,7 +37,7 @@ class Lpf{
     /**
      * Declare rk dopri5 class
     */
-    runge_kutta_dopri5<state13_t> rk_dopri5;
+    runge_kutta_dopri5<mat31_t> rk_dopri5;
 
     void system_dynamics(
         const mat31_t& v,

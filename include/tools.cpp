@@ -150,3 +150,32 @@ void print_params(Inertial_param& param1, Aero_coeff& param2, double& param3)
 
     cout<<"Arm length: "<<param3<<endl;
 }
+
+double noise(double stddev, long long seedNum)
+{
+    mt19937::result_type seed = seedNum;
+    auto dist = std::bind(
+        std::normal_distribution<double>{0, stddev},
+        mt19937(seed));
+
+    return dist();
+}
+
+long long get_seedNum()
+{
+    auto time_stamp = system_clock::now();
+    auto duration = time_stamp.time_since_epoch();
+    auto milisec = 
+    std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+    return static_cast<long long>(milisec);
+}
+
+void demux_vec3(mat31_t v, 
+vector<double>&x, 
+vector<double>&y, 
+vector<double>&z)
+{
+    x.push_back(v(0));
+    y.push_back(v(1));
+    z.push_back(v(2));
+}
