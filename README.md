@@ -1,6 +1,30 @@
 # disturbance_estimator
+## 1. True model implementation
 
-## 1. Low pass filter
+### a. Attitude dynamics validation
+
+Validation setup...
+
+Apply angular disturbance component along the only y axis.
+
+```
+u.setZero();
+sigma_ext.setZero();
+theta_ext << 0, 1, 0;
+...
+true_model.apply_input(u);
+true_model.apply_disturbance(sigma_ext, theta_ext);
+```
+
+The effect of inertial torque is small compared to that of the disturbance. 
+
+As you can see, the only y component of quaternion among x, y, and z axes varies when only the moment along y axis is disturbed.
+
+<img src="figures/true_model_test_result.png"/>
+
+### b. Translational dynamics validation
+
+## 2. Low pass filter
 
 The filter utilizes dorpri method to process noisy data. 
 

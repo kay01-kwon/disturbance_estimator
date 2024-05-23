@@ -1,8 +1,5 @@
 #include "low_pass_filter.hpp"
 #include "matplotlibcpp.h"
-#include <random>
-#include <chrono>
-#include <ctime>
 #include <map>
 #include <filesystem>
 #include <string>
