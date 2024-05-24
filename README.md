@@ -1,5 +1,9 @@
 # disturbance_estimator
-## 1. True model implementation
+## 1. Architecture
+
+<img src="figures/architecture.jpg">
+
+## 2. True model implementation
 
 ### a. Attitude dynamics validation
 
