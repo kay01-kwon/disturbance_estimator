@@ -5,6 +5,9 @@
 #include <random>
 #include <chrono>
 #include <ctime>
+#include <unistd.h>
+#include <limits.h>
+#include <string>
 
 using std::cout;
 using std::endl;
@@ -12,6 +15,7 @@ using std::mt19937;
 using std::chrono::system_clock;
 using std::chrono::duration_cast;
 using std::vector;
+using std::string;
 
 enum QuadModel{model1, model2};
 
@@ -42,5 +46,9 @@ long long get_seedNum();
 void demux_vec3(mat31_t v, vector<double>&x, vector<double>&y, vector<double>&z);
 
 void demux_quat(quat_t q, vector<double>&qw, vector<double>&qx, vector<double>&qy, vector<double>&qz);
+
+std::string getCurrentWorkingDirectory();
+
+std::string getParentDirectory(const std::string& path);
 
 #endif

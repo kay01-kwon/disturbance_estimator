@@ -2,20 +2,25 @@
 #include "config_read.hpp"
 #include "matplotlibcpp.h"
 #include <map>
-#include <filesystem>
+#include <unistd.h>
+#include <limits.h>
 #include <string>
-
 
 namespace plt = matplotlibcpp;
 
 using std::vector;
 using std::map;
-using std::string;
+
 
 int main()
 {
     string file_name;
-    file_name = "/home/kay/Documents/research/estimator/config/config_param.yaml";
+
+    file_name = get_current_dir_name();
+
+    file_name = getParentDirectory(file_name);
+
+    file_name = file_name + std::string("/config/config_param.yaml");
     
     Inertial_param inertial_param;
     Aero_coeff aero_coeff;

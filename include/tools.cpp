@@ -187,3 +187,24 @@ vector<double>&qz)
     qy.push_back(q.y());
     qz.push_back(q.z());
 }
+
+std::string getCurrentWorkingDirectory()
+{
+    char cwd[PATH_MAX];
+    if (getcwd(cwd, sizeof(cwd)) != nullptr) {
+        return std::string(cwd);
+    } else {
+        perror("getcwd() error");
+        return "";
+    }
+}
+
+std::string getParentDirectory(const std::string& path)
+{
+    size_t pos = path.find_last_of('/');
+    if (pos != std::string::npos) {
+        return path.substr(0, pos);
+    } else {
+        return path; // If there is no slash, return the original path (which is unlikely for absolute paths)
+    }
+}
