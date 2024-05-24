@@ -151,9 +151,6 @@ void True_model::system_dynamics(
     dwdt = inertial_param_.J.inverse()*
     (M_ - w_skiew*(inertial_param_.J*w));
 
-    // For test...
-    // dwdt = inertial_param_.J.inverse()*M_;
-
     for(int i = 0; i < 3; i++)
     {
         dsdt(i) = dpdt(i);
