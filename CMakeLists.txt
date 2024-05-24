@@ -16,7 +16,7 @@ src/estimator_node.cpp
 include/tools.cpp
 include/config_read.cpp
 include/true_model.cpp
-include/get_state.cpp)
+)
 
 target_include_directories(test PRIVATE 
 ${Python3_INCLUDE_DIRS})

@@ -1,7 +1,6 @@
 #include "true_model.hpp"
 #include "config_read.hpp"
 #include "matplotlibcpp.h"
-#include "get_state.hpp"
 #include <map>
 #include <filesystem>
 #include <string>
@@ -78,14 +77,22 @@ int main()
 
     for(int i = 0; i < 100; i++)
     {
+        mat31_t temp_p, temp_v, temp_w;
+        quat_t temp_q;
         true_model.apply_control_input(u);
         true_model.apply_disturbance(sigma_ext, theta_ext);
         true_model.do_rk_dopri();
 
-        get_position(&true_model, x, y, z);
-        get_velocity(&true_model, vx, vy, vz);
-        get_quaternion(&true_model, qw, qx, qy, qz);
-        get_angular_velocity(&true_model, wx, wy, wz);
+        true_model.get_pos_from_state(temp_p);
+        true_model.get_vel_from_state(temp_v);
+        true_model.get_quat_from_state(temp_q);
+        true_model.get_angular_vel_from_state(temp_w);
+
+        demux_vec3(temp_p, x, y, z);
+        demux_vec3(temp_v, vx, vy, vz);
+        demux_quat(temp_q, qw, qx, qy, qz);
+        demux_vec3(temp_w, wx, wy, wz);
+        
         time_vec.push_back(true_model.get_t());
     }
 

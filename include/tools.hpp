@@ -15,6 +15,8 @@ using std::vector;
 
 enum QuadModel{model1, model2};
 
+enum ODE_method{rk4, rk45, dorpri};
+
 void get_dqdt(quat_t q, mat31_t w, quat_t& dqdt);
 
 void conjugate(quat_t q, quat_t& q_res);
@@ -38,5 +40,7 @@ double noise(double stddev, long long seedNum);
 long long get_seedNum();
 
 void demux_vec3(mat31_t v, vector<double>&x, vector<double>&y, vector<double>&z);
+
+void demux_quat(quat_t q, vector<double>&qw, vector<double>&qx, vector<double>&qy, vector<double>&qz);
 
 #endif

@@ -170,12 +170,20 @@ long long get_seedNum()
     return static_cast<long long>(milisec);
 }
 
-void demux_vec3(mat31_t v, 
-vector<double>&x, 
-vector<double>&y, 
-vector<double>&z)
+void demux_vec3(mat31_t v, vector<double>&x, 
+vector<double>&y, vector<double>&z)
 {
     x.push_back(v(0));
     y.push_back(v(1));
     z.push_back(v(2));
+}
+
+void demux_quat(quat_t q, vector<double>&qw, 
+vector<double>&qx, vector<double>&qy, 
+vector<double>&qz)
+{
+    qw.push_back(q.w());
+    qx.push_back(q.x());
+    qy.push_back(q.y());
+    qz.push_back(q.z());
 }
