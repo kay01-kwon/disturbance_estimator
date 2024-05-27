@@ -11,6 +11,8 @@ using Eigen::Quaternion;
 using std::cout;
 using std::endl;
 
+enum ODE_method{rk4_method, rk45_method, dorpri_method};
+
 typedef Matrix<double,3,1> mat31_t;
 typedef Matrix<double,3,3> mat33_t;
 

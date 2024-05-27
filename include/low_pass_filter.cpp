@@ -11,6 +11,11 @@ Lpf::Lpf(double tau):tau_(tau)
     initialize_variables();
 }
 
+Lpf::Lpf(double tau, ODE_method method):tau_(tau)
+{
+    initialize_variables();
+}
+
 void Lpf::initialize_variables()
 {
     curr_v_.setZero();
@@ -29,7 +34,7 @@ void Lpf::set_time(double t)
 
 void Lpf::get_filtered_vector(mat31_t& v_out)
 {
-    do_rk_dopri();
+    solve();
     v_out = v_out_;
 }
 
@@ -40,13 +45,14 @@ double t)
     dvdt = -tau_*v + tau_*v_in_;
 }
 
-void Lpf::do_rk_dopri()
+void Lpf::solve()
 {
     dt_ = curr_time_ - prev_time_;
-    rk_dopri5.do_step(
+
+    rk4.do_step(
         std::bind(
             &Lpf::system_dynamics,
-            &(*this),
+            this,
             std::placeholders::_1,
             std::placeholders::_2,
             std::placeholders::_3

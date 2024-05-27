@@ -5,7 +5,7 @@
 #include <boost/numeric/odeint.hpp>
 #include <boost/numeric/odeint/external/eigen/eigen.hpp>
 
-using boost::numeric::odeint::runge_kutta_dopri5;
+using boost::numeric::odeint::runge_kutta4;
 
 class Lpf{
 
@@ -14,6 +14,8 @@ class Lpf{
     Lpf();
 
     Lpf(double tau);
+
+    Lpf(double tau, ODE_method method);
 
     void initialize_variables();
 
@@ -37,14 +39,14 @@ class Lpf{
     /**
      * Declare rk dopri5 class
     */
-    runge_kutta_dopri5<mat31_t> rk_dopri5;
+    runge_kutta4<mat31_t> rk4;
 
     void system_dynamics(
         const mat31_t& v,
         mat31_t& dvdt,
         double t);
 
-    void do_rk_dopri();
+    void solve();
 };
 
 

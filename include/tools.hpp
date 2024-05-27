@@ -19,8 +19,6 @@ using std::string;
 
 enum QuadModel{model1, model2};
 
-enum ODE_method{rk4, rk45, dorpri};
-
 void get_dqdt(quat_t q, mat31_t w, quat_t& dqdt);
 
 void conjugate(quat_t q, quat_t& q_res);

@@ -6,7 +6,7 @@
 #include <boost/numeric/odeint.hpp>
 #include <boost/numeric/odeint/external/eigen/eigen.hpp>
 
-using boost::numeric::odeint::runge_kutta_dopri5;
+using boost::numeric::odeint::runge_kutta4;
 
 class True_model{
 
@@ -81,9 +81,11 @@ class True_model{
     double t_, dt_;
 
     /**
-     * Declare rk dopri5 class
+     * Declare rk4 class
     */
-    runge_kutta_dopri5<state13_t> rk_dopri5;
+
+    runge_kutta4<state13_t> rk4;
+    
 
     /**
      * Quadrotor Model configuration

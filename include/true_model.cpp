@@ -171,7 +171,7 @@ void True_model::system_dynamics(
 
 void True_model::do_rk_dopri()
 {
-    rk_dopri5.do_step(
+    rk4.do_step(
         std::bind(
             &True_model::system_dynamics,
             &(*this),

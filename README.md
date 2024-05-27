@@ -1,9 +1,6 @@
 # disturbance_estimator
-## 1. Architecture
 
-<img src="figures/architecture.jpg">
-
-## 2. True model implementation
+## 1. True model implementation
 
 ### a. Attitude dynamics validation
 
@@ -30,7 +27,7 @@ As you can see, the only y component of quaternion among x, y, and z axes varies
 
 ## 2. Low pass filter
 
-The filter utilizes dorpri method to process noisy data. 
+The filter utilizes rk4 method to process noisy data. 
 
 Create Lpf object and, then pass the time constant for the low pass filter.
 
@@ -39,7 +36,7 @@ Lpf lpf;
 lpf = Lpf(2.0);
 ```
 
-Apply noisy data into the lpf object and set the time to process ode function of which numerical method is dopri.
+Apply noisy data into the lpf object and set the time to process ode function of which numerical method is rk4.
 
 ```
 lpf.apply_input(v_noisy);
