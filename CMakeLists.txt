@@ -37,3 +37,8 @@ ${Python3_INCLUDE_DIRS})
 target_link_libraries(test_lpf
 ${Python3_LIBRARIES}
 )
+
+add_executable(test_convex_fn_gamma_proj
+src/test_convex_fn_gamma_proj.cpp
+include/gamma_proj.cpp
+include/convex_fn.cpp)
