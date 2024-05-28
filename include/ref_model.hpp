@@ -29,6 +29,10 @@ class Ref_Model{
 
     void set_time(double t);
 
+    /**
+     * Step integration of rungee kutta 4th order.
+    */
+    void solve();
 
     /**
      * Get position, velocity, quaternion 
@@ -46,9 +50,11 @@ class Ref_Model{
 
     Inertial_param nominal_param_;
 
-    mat31_t u_hat_, M_hat_;
+    mat31_t u_hat_, mu_hat_;
 
     mat31_t theta_hat_, sigma_hat_;
+
+    mat31_t grav;
 
     state13_t s_hat_, dsdt_hat_;
     mat31_t p_hat_, v_hat_, w_hat_, w_state_;
@@ -66,11 +72,6 @@ class Ref_Model{
     void mu_comp2mu_hat(mat31_t mu_comp, mat31_t& mu_hat);
 
     /**
-     * Convert mu_hat to M_hat
-    */
-    void mu_hat2M_hat(mat31_t mu_hat, mat31_t& M_hat);
-
-    /**
      * Dynamics of reference model
     */
 
@@ -79,11 +80,6 @@ class Ref_Model{
         state13_t& dsdt,
         double t
     );
-
-    /**
-     * Step integration of rungee kutta 4th order.
-    */
-    void solve();
 
 };
 

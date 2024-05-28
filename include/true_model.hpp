@@ -71,7 +71,7 @@ class True_model{
     /**
      * force and moment
     */
-    mat31_t f_, M_, grav;
+    mat31_t f_, M_, grav, sigma_ext_;
     
 
     /**

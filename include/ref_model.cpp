@@ -6,11 +6,14 @@ Ref_Model::Ref_Model()
     nominal_param_.m = 1;
     
     u_hat_.setZero();
-    M_hat_.setZero();
+    mu_hat_.setZero();
 
     s_hat_.setZero();
     s_hat_(6) = 1.0;
     dsdt_hat_.setZero();
+
+    grav.setZero();
+    grav(2) = -9.81;
 
     curr_time_ = prev_time_ = dt_ = 0;
 }
@@ -19,11 +22,14 @@ Ref_Model::Ref_Model(Inertial_param &nominal_param)
 :nominal_param_(nominal_param)
 {
     u_hat_.setZero();
-    M_hat_.setZero();
+    mu_hat_.setZero();
 
     s_hat_.setZero();
     s_hat_(6) = 1.0;
     dsdt_hat_.setZero();
+
+    grav.setZero();
+    grav(2) = -9.81;
 
     curr_time_ = prev_time_ = dt_ = 0;
 }
@@ -58,6 +64,22 @@ void Ref_Model::set_est_disturbance(mat31_t sigma_est, mat31_t theta_est)
 void Ref_Model::set_time(double t)
 {
     curr_time_ = t;
+}
+
+void Ref_Model::solve()
+{
+    dt_ = curr_time_ - prev_time_;
+    rk4.do_step(
+        std::bind(
+        &Ref_Model::ref_dynamics,
+        this,
+        std::placeholders::_1,
+        std::placeholders::_2,
+        std::placeholders::_3
+        ),
+        s_hat_, prev_time_, dt_
+    );
+    prev_time_ = curr_time_;
 }
 
 void Ref_Model::get_pos_from_ref_model(mat31_t &p_ref)
@@ -103,17 +125,51 @@ void Ref_Model::mu_comp2mu_hat(mat31_t mu_comp, mat31_t &mu_hat)
 
 }
 
-void Ref_Model::mu_hat2M_hat(mat31_t mu_hat, mat31_t &M_hat)
-{
-    mat33_t skiew_sym;
-    vec2skiew(w_hat_, skiew_sym);
-    M_hat = mu_hat + skiew_sym*(nominal_param_.J*w_hat_);
-}
-
 void Ref_Model::ref_dynamics(const state13_t &s, state13_t &dsdt, double t)
 {
-}
+    mat31_t p,v,dpdt,dvdt;
+    quat_t q, q_unit, dqdt;
+    mat31_t w, dwdt;
+    mat33_t R, w_skiew;
 
-void Ref_Model::solve()
-{
+    for(int i = 0; i < 3; i++)
+    {
+        p(i) = s(i);
+        v(i) = s(i+3);
+    }
+
+    q.w() = s(6);
+    q.x() = s(7);
+    q.y() = s(8);
+    q.z() = s(9);
+    
+    quat2unit_quat(q, q_unit);
+
+    for(int i = 0; i < 3; i++)
+    {
+        w(i) = s(i+10);
+    }
+
+    dpdt = v;
+    dvdt = (1/nominal_param_.m)*u_hat_ + grav;
+
+    get_dqdt(q_unit, w, dqdt);
+    dwdt = nominal_param_.J.inverse()*mu_hat_;
+
+    for(int i = 0; i < 3; i++)
+    {
+        dsdt(i) = dpdt(i);
+        dsdt(i+3) = dvdt(i);
+    }
+
+    dsdt(6) = dqdt.w();
+    dsdt(7) = dqdt.x();
+    dsdt(8) = dqdt.y();
+    dsdt(9) = dqdt.z();
+
+    for(int i = 0; i < 3; i++)
+    {
+        dsdt(i+10) = dwdt(i);
+    }
+
 }

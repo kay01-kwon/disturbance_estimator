@@ -58,7 +58,7 @@ void True_model::apply_disturbance(
     mat31_t& sigma_ext,
     mat31_t& theta_ext)
 {
-    f_ += sigma_ext;
+    sigma_ext_ = sigma_ext;
     M_ += theta_ext;
 }
 
@@ -145,7 +145,7 @@ void True_model::system_dynamics(
     get_Rotm_from_quat(q_unit, R);
 
     dpdt = v;
-    dvdt = (1/inertial_param_.m)*R*f_ + grav;
+    dvdt = (1/inertial_param_.m)*R*f_ + grav + sigma_ext_;
 
     get_dqdt(q_unit, w, dqdt);
     dwdt = inertial_param_.J.inverse()*
