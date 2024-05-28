@@ -13,17 +13,23 @@ class DistEst{
 
     DistEst(Inertial_param& nominal_param);
 
+    void set_vel(mat31_t v_state, mat31_t v_hat);
+
+    void set_angular_vel(mat31_t w_state, mat31_t w_hat,
+    quat_t q_state, quat_t q_hat);
+
+
     void get_est_raw(mat31_t& sigma_est, mat31_t& theta_est);
 
     void get_est_filtered(mat31_t& sigma_est, mat31_t& theta_est);
 
-    void system_dynamics(const mat61_t& s, mat61_t& dsdt, double t);
+
 
     private:
     
     Inertial_param nominal_param_;
 
-    quat_t q_state_, q_hat_;
+    quat_t q_tilde_;
     mat31_t v_tilde_, w_tilde_;
     mat31_t sigma_hat_, theta_hat_;
     mat31_t dsigma_hat_, dtheta_hat_;
@@ -36,6 +42,10 @@ class DistEst{
     runge_kutta4<mat61_t> rk4;
     
     Lpf lpf_obj[2];
+
+    void initial_variables();
+
+    void system_dynamics(const mat61_t& s, mat61_t& dsdt, double t);
 
 };
 
