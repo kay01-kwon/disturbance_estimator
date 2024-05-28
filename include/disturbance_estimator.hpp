@@ -15,6 +15,8 @@ class DistEst{
 
     void set_vel(mat31_t v_state, mat31_t v_hat);
 
+    void set_time(double t);
+
     void set_angular_vel(mat31_t w_state, mat31_t w_hat,
     quat_t q_state, quat_t q_hat);
 
@@ -44,6 +46,8 @@ class DistEst{
     Lpf lpf_obj[2];
 
     void initial_variables();
+
+    void solve();
 
     void system_dynamics(const mat61_t& s, mat61_t& dsdt, double t);
 
