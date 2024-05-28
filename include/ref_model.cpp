@@ -130,7 +130,6 @@ void Ref_Model::ref_dynamics(const state13_t &s, state13_t &dsdt, double t)
     mat31_t p,v,dpdt,dvdt;
     quat_t q, q_unit, dqdt;
     mat31_t w, dwdt;
-    mat33_t R, w_skiew;
 
     for(int i = 0; i < 3; i++)
     {
