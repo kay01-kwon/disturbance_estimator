@@ -11,7 +11,8 @@ class ConvFn{
         ConvFn(const mat31_t& bound,
         double epsilon_);
 
-        double get_fn_value(mat31_t& vec);
+        void get_fn_value(mat31_t vec,
+        double& f, mat31_t& Df);
 
         ~ConvFn();
 

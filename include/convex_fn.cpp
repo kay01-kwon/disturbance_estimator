@@ -30,7 +30,8 @@ ConvFn::ConvFn(const mat31_t &bound, double epsilon)
 
 }
 
-double ConvFn::get_fn_value(mat31_t &vec)
+void ConvFn::get_fn_value(mat31_t vec, 
+double& f, mat31_t& Df)
 {
     double num, den;
 
@@ -39,8 +40,11 @@ double ConvFn::get_fn_value(mat31_t &vec)
     
     den = 2*epsilon_ *bound_scalar_
     + pow(epsilon_,2.0);
+
+    f = num/den;
     
-    return num/den;
+    Df = 2*vec/den;
+    
 }
 
 ConvFn::~ConvFn()
