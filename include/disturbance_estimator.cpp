@@ -136,7 +136,6 @@ void DistEst::solve()
     );
 
     prev_time_ = curr_time_;
-
 }
 
 void DistEst::system_dynamics(const mat61_t &s, mat61_t &dsdt, double t)

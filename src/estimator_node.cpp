@@ -1,20 +1,8 @@
-#include "true_model.hpp"
-#include "config_read.hpp"
-#include "matplotlibcpp.h"
-#include <map>
-#include <unistd.h>
-#include <limits.h>
-#include <string>
-
-namespace plt = matplotlibcpp;
-
-using std::vector;
-using std::map;
+#include "estimator_node.hpp"
 
 
 int main()
 {
-    string file_name;
 
     file_name = get_current_dir_name();
 
@@ -22,39 +10,24 @@ int main()
 
     file_name = file_name + std::string("/config/config_param.yaml");
     
-    Inertial_param inertial_param;
-    Aero_coeff aero_coeff;
-    double arm_length;
-
     /**
      * Configuration read
     */
-    Config_Read* config_read_ptr;
     config_read_ptr = new Config_Read(file_name);
     config_read_ptr->get_param(inertial_param, aero_coeff, arm_length);
 
     delete config_read_ptr;
 
-    print_params(inertial_param, 
-    aero_coeff, 
-    arm_length);
+    print_params(inertial_param, aero_coeff, arm_length);
+
 
     /**
      * Load true model
     */
-
-    True_model true_model;
-    QuadModel model = model1;
+    model = model1;
     true_model = True_model(model, 
     inertial_param, aero_coeff, arm_length);
 
-    vector<double> x, y, z, vx, vy, vz;
-    vector<double> qw, qx, qy, qz;
-    vector<double> wx, wy, wz;
-    vector<double> time_vec;
-
-    mat31_t sigma_ext, theta_ext;
-    mat41_t u;
 
     map<string, string> label_keywords, 
     font_keywords, legend_keywords;
@@ -102,7 +75,7 @@ int main()
         time_vec.push_back(true_model.get_t());
     }
 
-    vector<double> x_ticks, y_ticks;
+
     x_ticks.push_back(0);
     x_ticks.push_back(0.5);
     x_ticks.push_back(1.0);
