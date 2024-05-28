@@ -88,6 +88,8 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
     gamma_prj_obj[1].getProjGamma(theta_hat_, y_theta
     , f2, Df2, dtheta_hat_);
 
+    solve();
+
 }
 
 void DistEst::get_est_filtered(mat31_t &sigma_est, mat31_t &theta_est)
