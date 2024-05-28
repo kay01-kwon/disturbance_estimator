@@ -36,6 +36,7 @@ class DistEst{
     mat31_t sigma_hat_, theta_hat_;
     mat31_t dsigma_hat_, dtheta_hat_;
     mat31_t sigma_hat_lpf_, theta_hat_lpf_;
+    mat61_t s_;
 
     double curr_time_, prev_time_, dt_;
     

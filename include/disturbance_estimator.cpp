@@ -7,6 +7,18 @@ DistEst::DistEst()
 
     initial_variables();
 
+    mat31_t bound[2];
+
+    bound[0] << 5, 5, 5;
+    bound[1] << 3, 3, 3;
+
+    conv_fn_obj[0] = ConvFn(bound[0],1);
+    conv_fn_obj[1] = ConvFn(bound[1],1);
+    
+
+    lpf_obj[0] = Lpf(2.0);
+    lpf_obj[1] = Lpf(2.0);
+
 }
 
 DistEst::DistEst(Inertial_param &nominal_param)
@@ -87,7 +99,7 @@ void DistEst::get_est_filtered(mat31_t &sigma_est, mat31_t &theta_est)
 
     mat33_t R;
     get_Rotm_from_quat(q_tilde_,R);
-    
+
     lpf_obj[1].apply_input(R*theta_hat_);
     lpf_obj[1].set_time(curr_time_);
     lpf_obj[1].get_filtered_vector(theta_hat_lpf_);
@@ -109,9 +121,31 @@ void DistEst::initial_variables()
 
 void DistEst::solve()
 {
+    dt_ = curr_time_ - prev_time_;
+
+    rk4.do_step(
+        std::bind(
+            &DistEst::system_dynamics,
+            this,
+            std::placeholders::_1,
+            std::placeholders::_2,
+            std::placeholders::_3
+        ), s_, prev_time_, dt_
+    );
+
+    prev_time_ = curr_time_;
 
 }
 
 void DistEst::system_dynamics(const mat61_t &s, mat61_t &dsdt, double t)
 {
+    mat61_t v_in;
+    
+    for(int i = 0; i < 3; i++)
+    {
+        v_in(i) = dsigma_hat_(i);
+        v_in(i + 3) = dtheta_hat_(i);
+    }
+
+    dsdt = v_in;
 }
