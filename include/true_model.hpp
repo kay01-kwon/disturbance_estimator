@@ -30,7 +30,7 @@ class True_model{
         mat31_t& sigma_ext, 
         mat31_t& theta_ext);
 
-    void do_rk_dopri();
+    void do_rk4();
 
     /**
      * Get state, time derivative of that, 

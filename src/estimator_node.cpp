@@ -44,7 +44,8 @@ int main()
     */
 
     True_model true_model;
-    true_model = True_model(model1, 
+    QuadModel model = model1;
+    true_model = True_model(model, 
     inertial_param, aero_coeff, arm_length);
 
     vector<double> x, y, z, vx, vy, vz;
@@ -86,7 +87,7 @@ int main()
         quat_t temp_q;
         true_model.apply_control_input(u);
         true_model.apply_disturbance(sigma_ext, theta_ext);
-        true_model.do_rk_dopri();
+        true_model.do_rk4();
 
         true_model.get_pos_from_state(temp_p);
         true_model.get_vel_from_state(temp_v);

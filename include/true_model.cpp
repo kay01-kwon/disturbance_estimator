@@ -169,12 +169,12 @@ void True_model::system_dynamics(
 
 }
 
-void True_model::do_rk_dopri()
+void True_model::do_rk4()
 {
     rk4.do_step(
         std::bind(
             &True_model::system_dynamics,
-            &(*this),
+            this,
             std::placeholders::_1,
             std::placeholders::_2,
             std::placeholders::_3
