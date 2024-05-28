@@ -10,8 +10,8 @@ class GammaPrj{
 
         GammaPrj(mat33_t& Gamma);
 
-        void getProjGamma(mat31_t& vec, mat31_t& y, 
-        double f, mat31_t& grad_f ,mat31_t& vec_proj);
+        void getProjGamma(mat31_t vec, mat31_t y, 
+        double f, mat31_t grad_f ,mat31_t& vec_proj);
 
     private:
 

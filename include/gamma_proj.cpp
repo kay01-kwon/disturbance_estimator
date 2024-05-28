@@ -14,7 +14,7 @@ GammaPrj::GammaPrj(mat33_t &Gamma): Gamma_(Gamma)
     cout << Gamma_ <<endl;
 }
 
-void GammaPrj::getProjGamma(mat31_t &vec, mat31_t &y, double f, mat31_t &grad_f, mat31_t &vec_proj)
+void GammaPrj::getProjGamma(mat31_t vec, mat31_t y, double f, mat31_t grad_f, mat31_t& vec_proj)
 {
     if( (f > 0) && ( y.transpose()*Gamma_*grad_f > 0 ))
     {
