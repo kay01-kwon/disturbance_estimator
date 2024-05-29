@@ -47,3 +47,13 @@ lpf.get_filtered_vector(v_lpf);
 The test result of low pass filter is like the below.
 
 <img src="figures/low_pass_filter_result.png" />
+
+## 3. L1 disturbance estimator
+
+The below picture shows test result of disturbance estimator.
+
+The first and second row represent the external force and moment estimation result, respectively.
+
+The blue, orange, and green line denote the raw and L1 estimated disturbance and ground truth, respectively.
+
+<img src="figures/estimator_test_result.png" />

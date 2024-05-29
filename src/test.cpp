@@ -53,8 +53,8 @@ int main()
     ("loc","upper right"));
 
     u.setZero();
-    sigma_ext << 1, -2, 0;
-    theta_ext << -2, 1, 1;
+    sigma_ext << 1, -2, 1.5;
+    theta_ext << -1.2, 0.6, 0.3;
 
     mat31_t theta_est, sigma_est;
     mat31_t theta_est_lpf, sigma_est_lpf;
@@ -64,7 +64,7 @@ int main()
     sigma_est_lpf.setZero();
     
 
-    for(int i = 0; i < 1000; i++)
+    for(int i = 0; i < 2000; i++)
     {
         mat31_t p_state, v_state, w_state;
         quat_t q_state;
@@ -115,75 +115,94 @@ int main()
 
         demux_vec3(sigma_est, sigma_x, sigma_y, sigma_z);
         demux_vec3(sigma_est_lpf, sigma_x_lpf, sigma_y_lpf, sigma_z_lpf);
-        
+        demux_vec3(sigma_ext, sigma_x_g, sigma_y_g, sigma_z_g);
+
         demux_vec3(theta_est, theta_x, theta_y, theta_z);
         demux_vec3(theta_est_lpf, theta_x_lpf, theta_y_lpf, theta_z_lpf);
+        demux_vec3(theta_ext, theta_x_g, theta_y_g, theta_z_g);
     }
 
+    x_ticks.push_back(0);
+    x_ticks.push_back(5);
+    x_ticks.push_back(10);
+    x_ticks.push_back(15);
+    x_ticks.push_back(20);
+
+    y_ticks.push_back(-4);
+    y_ticks.push_back(-2);
+    y_ticks.push_back(0.0);
+    y_ticks.push_back(2.0);
+    y_ticks.push_back(4);
 
     plt::figure_size(3500,2000);
 
     plt::subplot(2,3,1);
     plt::plot(time_vec, sigma_x, label_keywords);
     plt::plot(time_vec, sigma_x_lpf, label_keywords);
-    // plt::title("$q_{w}$ - t", font_keywords);
+    plt::plot(time_vec, sigma_x_g, label_keywords);
+    
+    plt::title("$σ_{x}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
-    // plt::ylabel("$q_{w}$",font_keywords);
-    // plt::xticks(x_ticks,font_keywords);
-    // plt::yticks(y_ticks,font_keywords);
+    plt::ylabel("$σ_{x}$",font_keywords);
+    plt::xticks(x_ticks,font_keywords);
+    plt::yticks(y_ticks,font_keywords);
     plt::grid(true);
 
     plt::subplot(2,3,2);
     plt::plot(time_vec, sigma_y, label_keywords);
     plt::plot(time_vec, sigma_y_lpf, label_keywords);
-    // plt::title("$q_{x}$ - t", font_keywords);
+    plt::plot(time_vec, sigma_y_g, label_keywords);
+    
+    plt::title("$σ_{y}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
-    // plt::ylabel("$q_{x}$",font_keywords);
-    // plt::xticks(x_ticks,font_keywords);
-    // plt::yticks(y_ticks,font_keywords);
+    plt::ylabel("$σ_{y}$",font_keywords);
+    plt::xticks(x_ticks,font_keywords);
+    plt::yticks(y_ticks,font_keywords);
     plt::grid(true);
 
     plt::subplot(2,3,3);
     plt::plot(time_vec, sigma_z, label_keywords);
     plt::plot(time_vec, sigma_z_lpf, label_keywords);
-    // plt::title("$q_{y}$ - t", font_keywords);
-
+    plt::plot(time_vec, sigma_z_g, label_keywords);
+    plt::title("$σ_{z}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
-    // plt::ylabel("$q_{y}$",font_keywords);
-    // plt::xticks(x_ticks,font_keywords);
-    // plt::yticks(y_ticks,font_keywords);
+    plt::ylabel("$σ_{z}$",font_keywords);
+    plt::xticks(x_ticks,font_keywords);
+    plt::yticks(y_ticks,font_keywords);
     plt::grid(true);
 
 
     plt::subplot(2,3,4);
     plt::plot(time_vec, theta_x, label_keywords);
     plt::plot(time_vec, theta_x_lpf, label_keywords);
-    // plt::title("$q_{w}$ - t", font_keywords);
+    plt::plot(time_vec, theta_x_g, label_keywords);
+    plt::title("$θ_{x}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
-    // plt::ylabel("$q_{w}$",font_keywords);
-    // plt::xticks(x_ticks,font_keywords);
-    // plt::yticks(y_ticks,font_keywords);
+    plt::ylabel("$θ_{x}$",font_keywords);
+    plt::xticks(x_ticks,font_keywords);
+    plt::yticks(y_ticks,font_keywords);
     plt::grid(true);
 
     plt::subplot(2,3,5);
     plt::plot(time_vec, theta_y, label_keywords);
     plt::plot(time_vec, theta_y_lpf, label_keywords);
-    // plt::title("$q_{x}$ - t", font_keywords);
+    plt::plot(time_vec, theta_y_g, label_keywords);
+    plt::title("$θ_{y}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
-    // plt::ylabel("$q_{x}$",font_keywords);
-    // plt::xticks(x_ticks,font_keywords);
-    // plt::yticks(y_ticks,font_keywords);
+    plt::ylabel("$θ_{y}$",font_keywords);
+    plt::xticks(x_ticks,font_keywords);
+    plt::yticks(y_ticks,font_keywords);
     plt::grid(true);
 
     plt::subplot(2,3,6);
     plt::plot(time_vec, theta_z, label_keywords);
     plt::plot(time_vec, theta_z_lpf, label_keywords);
-    // plt::title("$q_{y}$ - t", font_keywords);
-
+    plt::plot(time_vec, theta_z_g, label_keywords);
+    plt::title("$θ_{z}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
-    // plt::ylabel("$q_{y}$",font_keywords);
-    // plt::xticks(x_ticks,font_keywords);
-    // plt::yticks(y_ticks,font_keywords);
+    plt::ylabel("$θ_{z}$",font_keywords);
+    plt::xticks(x_ticks,font_keywords);
+    plt::yticks(y_ticks,font_keywords);
     plt::grid(true);
 
     plt::show();
