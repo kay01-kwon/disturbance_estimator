@@ -76,6 +76,9 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
     y_sigma = - v_tilde_;
     y_theta = - P_transpose * w_tilde_;
 
+    // cout<<y_sigma<<endl;
+    // cout<<endl;
+
     double f1, f2;
     mat31_t Df1, Df2;
     
@@ -92,19 +95,19 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
 
 }
 
-void DistEst::get_est_filtered(mat31_t &sigma_est, mat31_t &theta_est)
+void DistEst::get_est_filtered(mat31_t &sigma_hat_lpf, mat31_t &theta_hat_lpf)
 {
 
     lpf_obj[0].apply_input(sigma_hat_);
     lpf_obj[0].set_time(curr_time_);
-    lpf_obj[0].get_filtered_vector(sigma_hat_lpf_);
+    lpf_obj[0].get_filtered_vector(sigma_hat_lpf);
 
     mat33_t R;
     get_Rotm_from_quat(q_tilde_,R);
 
     lpf_obj[1].apply_input(R*theta_hat_);
     lpf_obj[1].set_time(curr_time_);
-    lpf_obj[1].get_filtered_vector(theta_hat_lpf_);
+    lpf_obj[1].get_filtered_vector(theta_hat_lpf);
 }
 
 void DistEst::initial_variables()
@@ -134,6 +137,12 @@ void DistEst::solve()
             std::placeholders::_3
         ), s_, prev_time_, dt_
     );
+
+    for(int i =  0; i < 3; i++)
+    {
+        sigma_hat_(i) = s_(i);
+        theta_hat_(i) = s_(i+3);
+    }
 
     prev_time_ = curr_time_;
 }

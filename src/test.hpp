@@ -1,5 +1,5 @@
-#ifndef ESTIMATOR_NODE_HPP_
-#define ESTIMATOR_NODE_HPP_
+#ifndef TEST_HPP_
+#define TEST_HPP_
 #include "true_model.hpp"
 #include "config_read.hpp"
 #include "disturbance_estimator.hpp"
@@ -33,6 +33,12 @@ vector<double> x, y, z, vx, vy, vz;
 vector<double> qw, qx, qy, qz;
 vector<double> wx, wy, wz;
 vector<double> time_vec;
+
+vector<double> sigma_x, sigma_y, sigma_z;
+vector<double> sigma_x_lpf, sigma_y_lpf, sigma_z_lpf;
+
+vector<double> theta_x, theta_y, theta_z;
+vector<double> theta_x_lpf, theta_y_lpf, theta_z_lpf;
 
 mat31_t sigma_ext, theta_ext;
 mat41_t u;

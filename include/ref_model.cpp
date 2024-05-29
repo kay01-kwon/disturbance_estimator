@@ -37,7 +37,7 @@ Ref_Model::Ref_Model(Inertial_param &nominal_param)
 void Ref_Model::apply_input(mat31_t &u_comp, mat31_t &mu_comp)
 {
     u_hat_ = u_comp;
-
+    mu_comp2mu_hat(mu_comp, mu_hat_);
 }
 
 void Ref_Model::set_quat_angular_vel(quat_t &q_state,
@@ -79,7 +79,22 @@ void Ref_Model::solve()
         ),
         s_hat_, prev_time_, dt_
     );
+    
+    for(int i = 0; i < 3; i++)
+    {
+        p_hat_(i) = s_hat_(i);
+        v_hat_(i) = s_hat_(i+3);
+        w_hat_(i) = s_hat_(i+10);
+    }
+
+    q_hat_.w() = s_hat_(6);
+    q_hat_.x() = s_hat_(7);
+    q_hat_.y() = s_hat_(8);
+    q_hat_.z() = s_hat_(9);
+
+
     prev_time_ = curr_time_;
+
 }
 
 void Ref_Model::get_pos_from_ref_model(mat31_t &p_ref)
@@ -150,7 +165,7 @@ void Ref_Model::ref_dynamics(const state13_t &s, state13_t &dsdt, double t)
     }
 
     dpdt = v;
-    dvdt = (1/nominal_param_.m)*u_hat_ + grav;
+    dvdt = (1/nominal_param_.m)*(u_hat_ + sigma_hat_) + grav;
 
     get_dqdt(q_unit, w, dqdt);
     dwdt = nominal_param_.J.inverse()*mu_hat_;

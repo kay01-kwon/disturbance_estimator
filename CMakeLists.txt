@@ -11,11 +11,36 @@ include_directories(
     ${YAML_CPP_INCLUDE_DIRS}
 )
 
-add_executable(test 
+add_executable(estimator_node 
 src/estimator_node.cpp
 include/tools.cpp
 include/config_read.cpp
 include/true_model.cpp
+include/ref_model.cpp
+include/convex_fn.cpp
+include/gamma_proj.cpp
+include/low_pass_filter.cpp
+include/disturbance_estimator.cpp
+)
+
+target_include_directories(estimator_node PRIVATE 
+${Python3_INCLUDE_DIRS})
+
+target_link_libraries(estimator_node 
+${YAML_CPP_LIBRARIES}
+${Python3_LIBRARIES} 
+)
+
+add_executable(test 
+src/test.cpp
+include/tools.cpp
+include/config_read.cpp
+include/true_model.cpp
+include/ref_model.cpp
+include/convex_fn.cpp
+include/gamma_proj.cpp
+include/low_pass_filter.cpp
+include/disturbance_estimator.cpp
 )
 
 target_include_directories(test PRIVATE 

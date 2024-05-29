@@ -27,6 +27,8 @@ int main()
     model = model1;
     true_model = True_model(model, 
     inertial_param, aero_coeff, arm_length);
+    ref_model = Ref_Model(inertial_param);
+    estimator = DistEst(inertial_param);
 
 
     map<string, string> label_keywords, 
@@ -66,6 +68,8 @@ int main()
         true_model.get_vel_from_state(temp_v);
         true_model.get_quat_from_state(temp_q);
         true_model.get_angular_vel_from_state(temp_w);
+
+        mat31_t temp_u_comp, temp_mu_comp;
 
         demux_vec3(temp_p, x, y, z);
         demux_vec3(temp_v, vx, vy, vz);
