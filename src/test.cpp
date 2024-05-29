@@ -54,7 +54,7 @@ int main()
 
     u.setZero();
     sigma_ext << 1, -2, 0;
-    theta_ext << 0, 1, 0;
+    theta_ext << -2, 1, 1;
 
     mat31_t theta_est, sigma_est;
     mat31_t theta_est_lpf, sigma_est_lpf;
@@ -80,14 +80,13 @@ int main()
         demux_vec3(p_state, x, y, z);
         demux_vec3(v_state, vx, vy, vz);
         demux_quat(q_state, qw, qx, qy, qz);
-        // demux_vec3(w_state, wx, wy, wz);
         
         time_vec.push_back(true_model.get_t());
 
         mat31_t u1, u2;
 
         u1.setZero();
-        u2 = -theta_est_lpf;
+        u2.setZero();
 
         ref_model.set_quat_angular_vel(q_state, w_state);
         ref_model.set_est_disturbance(sigma_est, theta_est);
@@ -111,7 +110,7 @@ int main()
         estimator.get_est_raw(sigma_est, theta_est);
         estimator.get_est_filtered(sigma_est_lpf, theta_est_lpf);
 
-        demux_vec3(p_state, wx, wy, wz);
+        demux_vec3(w_ref, wx, wy, wz);
         
 
         demux_vec3(sigma_est, sigma_x, sigma_y, sigma_z);
@@ -122,39 +121,10 @@ int main()
     }
 
 
-
-
     plt::figure_size(3500,2000);
+
     plt::subplot(2,3,1);
-    plt::plot(time_vec, wx, label_keywords);
-    // plt::title("$q_{w}$ - t", font_keywords);
-    plt::xlabel("time (s)",font_keywords);
-    // plt::ylabel("$q_{w}$",font_keywords);
-    // plt::xticks(x_ticks,font_keywords);
-    // plt::yticks(y_ticks,font_keywords);
-    plt::grid(true);
-
-    plt::subplot(2,3,2);
-    plt::plot(time_vec, wy, label_keywords);
-    // plt::title("$q_{x}$ - t", font_keywords);
-    plt::xlabel("time (s)",font_keywords);
-    // plt::ylabel("$q_{x}$",font_keywords);
-    // plt::xticks(x_ticks,font_keywords);
-    // plt::yticks(y_ticks,font_keywords);
-    plt::grid(true);
-
-    plt::subplot(2,3,3);
-    plt::plot(time_vec, wz, label_keywords);
-    // plt::title("$q_{y}$ - t", font_keywords);
-    plt::xlabel("time (s)",font_keywords);
-    // plt::ylabel("$q_{y}$",font_keywords);
-    // plt::xticks(x_ticks,font_keywords);
-    // plt::yticks(y_ticks,font_keywords);
-    plt::grid(true);
-
-
-
-    plt::subplot(2,3,4);
+    plt::plot(time_vec, sigma_x, label_keywords);
     plt::plot(time_vec, sigma_x_lpf, label_keywords);
     // plt::title("$q_{w}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
@@ -163,7 +133,8 @@ int main()
     // plt::yticks(y_ticks,font_keywords);
     plt::grid(true);
 
-    plt::subplot(2,3,5);
+    plt::subplot(2,3,2);
+    plt::plot(time_vec, sigma_y, label_keywords);
     plt::plot(time_vec, sigma_y_lpf, label_keywords);
     // plt::title("$q_{x}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
@@ -172,9 +143,43 @@ int main()
     // plt::yticks(y_ticks,font_keywords);
     plt::grid(true);
 
-    plt::subplot(2,3,6);
+    plt::subplot(2,3,3);
+    plt::plot(time_vec, sigma_z, label_keywords);
     plt::plot(time_vec, sigma_z_lpf, label_keywords);
     // plt::title("$q_{y}$ - t", font_keywords);
+
+    plt::xlabel("time (s)",font_keywords);
+    // plt::ylabel("$q_{y}$",font_keywords);
+    // plt::xticks(x_ticks,font_keywords);
+    // plt::yticks(y_ticks,font_keywords);
+    plt::grid(true);
+
+
+    plt::subplot(2,3,4);
+    plt::plot(time_vec, theta_x, label_keywords);
+    plt::plot(time_vec, theta_x_lpf, label_keywords);
+    // plt::title("$q_{w}$ - t", font_keywords);
+    plt::xlabel("time (s)",font_keywords);
+    // plt::ylabel("$q_{w}$",font_keywords);
+    // plt::xticks(x_ticks,font_keywords);
+    // plt::yticks(y_ticks,font_keywords);
+    plt::grid(true);
+
+    plt::subplot(2,3,5);
+    plt::plot(time_vec, theta_y, label_keywords);
+    plt::plot(time_vec, theta_y_lpf, label_keywords);
+    // plt::title("$q_{x}$ - t", font_keywords);
+    plt::xlabel("time (s)",font_keywords);
+    // plt::ylabel("$q_{x}$",font_keywords);
+    // plt::xticks(x_ticks,font_keywords);
+    // plt::yticks(y_ticks,font_keywords);
+    plt::grid(true);
+
+    plt::subplot(2,3,6);
+    plt::plot(time_vec, theta_z, label_keywords);
+    plt::plot(time_vec, theta_z_lpf, label_keywords);
+    // plt::title("$q_{y}$ - t", font_keywords);
+
     plt::xlabel("time (s)",font_keywords);
     // plt::ylabel("$q_{y}$",font_keywords);
     // plt::xticks(x_ticks,font_keywords);

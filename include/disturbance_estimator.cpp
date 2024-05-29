@@ -30,7 +30,7 @@ DistEst::DistEst(Inertial_param &nominal_param)
     bound[0] << 5, 5, 5;
     bound[1] << 3, 3, 3;
 
-    conv_fn_obj[0] = ConvFn(bound[0],0.001);
+    conv_fn_obj[0] = ConvFn(bound[0],0.1);
     conv_fn_obj[1] = ConvFn(bound[1],1);
     
 
@@ -105,14 +105,20 @@ void DistEst::get_est_filtered(mat31_t &sigma_hat_lpf, mat31_t &theta_hat_lpf)
     lpf_obj[0].set_time(curr_time_);
     lpf_obj[0].get_filtered_vector(sigma_hat_lpf);
 
-    for(int i = 0; i < 3; i++)
-        cout<<sigma_hat_lpf(i)<<"\t";
-    cout<<endl;
+    // for(int i = 0; i < 3; i++)
+    //     cout<<sigma_hat_lpf(i)<<"\t";
+    // cout<<endl;
 
     mat33_t R;
 
     get_Rotm_from_quat(q_tilde_,R);
 
+    cout<<q_tilde_.w()<<" ";
+    cout<<q_tilde_.x()<<" ";
+    cout<<q_tilde_.y()<<" ";
+    cout<<q_tilde_.z()<<" ";
+    cout<<endl;
+    cout<<endl;
     // cout<<R<<endl;
     // cout<<endl;
 
