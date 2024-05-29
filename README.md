@@ -54,6 +54,6 @@ The below picture shows test result of disturbance estimator.
 
 The first and second row represent the external force and moment estimation result, respectively.
 
-The blue, orange, and green line denote the raw and L1 estimated disturbance and ground truth, respectively.
+The blue, orange, and green line denote the raw, L1 estimated disturbance and ground truth, respectively.
 
 <img src="figures/estimator_test_result.png" />
