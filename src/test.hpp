@@ -30,8 +30,11 @@ Ref_Model ref_model;
 DistEst estimator;
 
 vector<double> x, y, z, vx, vy, vz;
+vector<double> vx_ref, vy_ref, vz_ref;
 vector<double> qw, qx, qy, qz;
+vector<double> qw_ref, qx_ref, qy_ref, qz_ref;
 vector<double> wx, wy, wz;
+vector<double> wx_ref, wy_ref, wz_ref;
 vector<double> time_vec;
 
 vector<double> sigma_x, sigma_y, sigma_z;

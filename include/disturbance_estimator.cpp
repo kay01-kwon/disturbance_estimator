@@ -10,11 +10,17 @@ DistEst::DistEst()
     mat31_t bound[2];
 
     bound[0] << 5, 5, 5;
-    bound[1] << 3, 3, 3;
+    bound[1] << 5, 5, 5;
+
+    mat33_t Gamma_Value;
+
+    Gamma_Value.setIdentity();
+    Gamma_Value *= 1000.0;
 
     conv_fn_obj[0] = ConvFn(bound[0],1);
     conv_fn_obj[1] = ConvFn(bound[1],1);
     
+    gamma_prj_obj[1] = GammaPrj(Gamma_Value);
 
     lpf_obj[0] = Lpf(2.0);
     lpf_obj[1] = Lpf(2.0);
@@ -28,13 +34,19 @@ DistEst::DistEst(Inertial_param &nominal_param)
     initial_variables();
 
     bound[0] << 5, 5, 5;
-    bound[1] << 3, 3, 3;
+    bound[1] << 5, 5, 5;
 
-    conv_fn_obj[0] = ConvFn(bound[0],0.1);
-    conv_fn_obj[1] = ConvFn(bound[1],1);
+    mat33_t Gamma_Value;
+
+    Gamma_Value.setIdentity();
+    Gamma_Value *= 1000.0;
+
+    conv_fn_obj[0] = ConvFn(bound[0],10);
+    conv_fn_obj[1] = ConvFn(bound[1],10);
     
+    gamma_prj_obj[1] = GammaPrj(Gamma_Value);
 
-    lpf_obj[0] = Lpf(1.0);
+    lpf_obj[0] = Lpf(2.0);
     lpf_obj[1] = Lpf(2.0);
     
 }
@@ -67,9 +79,10 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
 
     get_Rotm_from_quat(q_tilde_,R);
 
-    P = nominal_param_.J * 
-    R.transpose() * 
-    nominal_param_.J.inverse();
+    P = nominal_param_.J 
+    * R.transpose() 
+    * nominal_param_.J.inverse()
+    * R;
 
     P_transpose = P.transpose();
 
@@ -122,7 +135,7 @@ void DistEst::get_est_filtered(mat31_t &sigma_hat_lpf, mat31_t &theta_hat_lpf)
     // cout<<R<<endl;
     // cout<<endl;
 
-    lpf_obj[1].apply_input(R*theta_hat_);
+    lpf_obj[1].apply_input(theta_hat_);
     lpf_obj[1].set_time(curr_time_);
     lpf_obj[1].get_filtered_vector(theta_hat_lpf);
 }

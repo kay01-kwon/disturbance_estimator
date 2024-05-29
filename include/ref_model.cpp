@@ -119,7 +119,7 @@ void Ref_Model::get_angular_vel_from_ref_model(mat31_t &w_ref)
 
 void Ref_Model::mu_comp2mu_hat(mat31_t mu_comp, mat31_t &mu_hat)
 {
-    mat33_t P, R, skiew_sym;
+    mat33_t C, R, skiew_sym;
 
     // Get rotation matrix from q_tilde_
     get_Rotm_from_quat(q_tilde_, R);
@@ -127,12 +127,13 @@ void Ref_Model::mu_comp2mu_hat(mat31_t mu_comp, mat31_t &mu_hat)
     // Get the error of angular velocity
     w_tilde_ = w_hat_ - R.transpose()*w_state_;
 
-    P = nominal_param_.J * 
-    R.transpose() * nominal_param_.J.inverse();
+    C = nominal_param_.J 
+    * R.transpose() 
+    * nominal_param_.J.inverse();
 
     vec2skiew(w_tilde_, skiew_sym);
 
-    mu_hat = P
+    mu_hat = C
     *(mu_comp + R*theta_hat_)
     - nominal_param_.J
     *skiew_sym
