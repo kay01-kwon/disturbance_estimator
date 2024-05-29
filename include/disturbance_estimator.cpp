@@ -30,18 +30,18 @@ DistEst::DistEst(Inertial_param &nominal_param)
     bound[0] << 5, 5, 5;
     bound[1] << 3, 3, 3;
 
-    conv_fn_obj[0] = ConvFn(bound[0],1);
+    conv_fn_obj[0] = ConvFn(bound[0],0.001);
     conv_fn_obj[1] = ConvFn(bound[1],1);
     
 
-    lpf_obj[0] = Lpf(2.0);
+    lpf_obj[0] = Lpf(1.0);
     lpf_obj[1] = Lpf(2.0);
     
 }
 
 void DistEst::set_vel(mat31_t v_state, mat31_t v_hat)
 {
-    v_tilde_ = v_state - v_hat;
+    v_tilde_ = v_hat - v_state;
 }
 
 void DistEst::set_time(double t)
@@ -93,6 +93,9 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
 
     solve();
 
+    sigma_est = sigma_hat_;
+    theta_est = theta_hat_;
+
 }
 
 void DistEst::get_est_filtered(mat31_t &sigma_hat_lpf, mat31_t &theta_hat_lpf)
@@ -102,8 +105,16 @@ void DistEst::get_est_filtered(mat31_t &sigma_hat_lpf, mat31_t &theta_hat_lpf)
     lpf_obj[0].set_time(curr_time_);
     lpf_obj[0].get_filtered_vector(sigma_hat_lpf);
 
+    for(int i = 0; i < 3; i++)
+        cout<<sigma_hat_lpf(i)<<"\t";
+    cout<<endl;
+
     mat33_t R;
+
     get_Rotm_from_quat(q_tilde_,R);
+
+    // cout<<R<<endl;
+    // cout<<endl;
 
     lpf_obj[1].apply_input(R*theta_hat_);
     lpf_obj[1].set_time(curr_time_);
@@ -142,7 +153,9 @@ void DistEst::solve()
     {
         sigma_hat_(i) = s_(i);
         theta_hat_(i) = s_(i+3);
+        // cout<<sigma_hat_(i)<<"\t";
     }
+    // cout<<endl;
 
     prev_time_ = curr_time_;
 }

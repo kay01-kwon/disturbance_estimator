@@ -53,7 +53,7 @@ int main()
     ("loc","upper right"));
 
     u.setZero();
-    sigma_ext << 1, 0, 0;
+    sigma_ext << 1, -2, 0;
     theta_ext << 0, 1, 0;
 
     mat31_t theta_est, sigma_est;
@@ -64,7 +64,7 @@ int main()
     sigma_est_lpf.setZero();
     
 
-    for(int i = 0; i < 100; i++)
+    for(int i = 0; i < 1000; i++)
     {
         mat31_t p_state, v_state, w_state;
         quat_t q_state;
@@ -86,7 +86,6 @@ int main()
 
         mat31_t u1, u2;
 
-        u1 = -sigma_est_lpf;
         u1.setZero();
         u2 = -theta_est_lpf;
 
@@ -156,7 +155,7 @@ int main()
 
 
     plt::subplot(2,3,4);
-    plt::plot(time_vec, sigma_x, label_keywords);
+    plt::plot(time_vec, sigma_x_lpf, label_keywords);
     // plt::title("$q_{w}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
     // plt::ylabel("$q_{w}$",font_keywords);
@@ -165,7 +164,7 @@ int main()
     plt::grid(true);
 
     plt::subplot(2,3,5);
-    plt::plot(time_vec, sigma_y, label_keywords);
+    plt::plot(time_vec, sigma_y_lpf, label_keywords);
     // plt::title("$q_{x}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
     // plt::ylabel("$q_{x}$",font_keywords);
@@ -174,7 +173,7 @@ int main()
     plt::grid(true);
 
     plt::subplot(2,3,6);
-    plt::plot(time_vec, sigma_z, label_keywords);
+    plt::plot(time_vec, sigma_z_lpf, label_keywords);
     // plt::title("$q_{y}$ - t", font_keywords);
     plt::xlabel("time (s)",font_keywords);
     // plt::ylabel("$q_{y}$",font_keywords);
