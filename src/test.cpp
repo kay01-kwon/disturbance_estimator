@@ -54,7 +54,7 @@ int main()
 
     u.setZero();
     sigma_ext << 1, -2, 1.5;
-    theta_ext << -1.2, 0.6, 0.3;
+    theta_ext << 0, 0, 0;
 
     mat31_t theta_est, sigma_est;
     mat31_t theta_est_lpf, sigma_est_lpf;
@@ -64,7 +64,7 @@ int main()
     sigma_est_lpf.setZero();
     
 
-    for(int i = 0; i < 1000; i++)
+    for(int i = 0; i < 3000; i++)
     {
         mat31_t p_state, v_state, w_state;
         quat_t q_state;
@@ -86,12 +86,12 @@ int main()
 
         mat31_t u1, u2;
 
-        if(i > 500)
-        {
+        if(true_model.get_t() > 3)
             sigma_ext << -1, 2, 0.5;
-            theta_ext << 0.5, -1, -0.3;
-            // theta_ext.setZero();
-        }
+        theta_ext << sin(2*true_model.get_t()), 
+        -sin(1.2*true_model.get_t()),
+        2*cos(4*true_model.get_t());
+        // theta_ext.setZero();
 
         u1.setZero();
         u2.setZero();

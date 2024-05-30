@@ -34,7 +34,7 @@ DistEst::DistEst(Inertial_param &nominal_param)
     initial_variables();
 
     bound[0] << 5, 5, 5;
-    bound[1] << 5, 5, 5;
+    bound[1] << 10, 10, 10;
 
     mat33_t Gamma_Value;
 
@@ -76,8 +76,19 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
 {
     mat31_t y_sigma, y_theta;
     mat33_t R, P, P_transpose;
+    mat33_t J_inv, J_inv_transpose;
+    mat31_t q_vec;
 
-    get_Rotm_from_quat(q_tilde_,R);
+    J_inv = nominal_param_.J.inverse();
+    J_inv_transpose = J_inv.transpose();
+
+    quat_t q_tilde_unit;
+
+    quat2unit_quat(q_tilde_, q_tilde_unit);
+
+    get_Rotm_from_quat(q_tilde_unit,R);
+    quat2quat_vec(q_tilde_, q_vec);
+    q_vec = signum(q_tilde_.w()) * q_vec;
 
     P = nominal_param_.J 
     * R.transpose() 
@@ -88,9 +99,6 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
 
     y_sigma = - v_tilde_;
     y_theta = - P_transpose * w_tilde_;
-
-    // cout<<y_sigma<<endl;
-    // cout<<endl;
 
     double f1, f2;
     mat31_t Df1, Df2;
@@ -118,22 +126,11 @@ void DistEst::get_est_filtered(mat31_t &sigma_hat_lpf, mat31_t &theta_hat_lpf)
     lpf_obj[0].set_time(curr_time_);
     lpf_obj[0].get_filtered_vector(sigma_hat_lpf);
 
-    // for(int i = 0; i < 3; i++)
-    //     cout<<sigma_hat_lpf(i)<<"\t";
-    // cout<<endl;
-
     mat33_t R;
+    quat_t q_tilde_unit;
+    quat2unit_quat(q_tilde_,q_tilde_unit);
 
-    get_Rotm_from_quat(q_tilde_,R);
-
-    cout<<q_tilde_.w()<<" ";
-    cout<<q_tilde_.x()<<" ";
-    cout<<q_tilde_.y()<<" ";
-    cout<<q_tilde_.z()<<" ";
-    cout<<endl;
-    cout<<endl;
-    // cout<<R<<endl;
-    // cout<<endl;
+    get_Rotm_from_quat(q_tilde_unit,R);
 
     lpf_obj[1].apply_input(theta_hat_);
     lpf_obj[1].set_time(curr_time_);
@@ -172,9 +169,7 @@ void DistEst::solve()
     {
         sigma_hat_(i) = s_(i);
         theta_hat_(i) = s_(i+3);
-        // cout<<sigma_hat_(i)<<"\t";
     }
-    // cout<<endl;
 
     prev_time_ = curr_time_;
 }

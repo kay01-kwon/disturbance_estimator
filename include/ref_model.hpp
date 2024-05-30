@@ -20,9 +20,9 @@ class Ref_Model{
      * u_comp = u - C(s)*sigma_hat
      * mu_comp = mu - C(s)*theta_hat  
     */
-    void apply_input(mat31_t& u_comp, mat31_t& mu_comp);
+    void apply_input(mat31_t u_comp, mat31_t mu_comp);
 
-    void set_quat_angular_vel(quat_t& q_state, mat31_t& w_state);
+    void set_quat_angular_vel(quat_t q_state, mat31_t w_state);
 
     void set_est_disturbance(mat31_t sigma_est,
     mat31_t theta_est);
