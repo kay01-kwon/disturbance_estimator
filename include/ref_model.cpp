@@ -142,7 +142,7 @@ void Ref_Model::mu_comp2mu_hat(mat31_t mu_comp, mat31_t &mu_hat)
     - nominal_param_.J
     *skiew_sym
     *R.transpose()*w_state_
-    -1.0*q_vec - 0.5*w_tilde_;
+    -2.0*q_vec - 0.5*w_tilde_;
 
 }
 

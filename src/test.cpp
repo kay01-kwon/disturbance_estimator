@@ -88,9 +88,9 @@ int main()
 
         if(true_model.get_t() > 3)
             sigma_ext << -1, 2, 0.5;
-        theta_ext << sin(2*true_model.get_t()), 
-        -sin(1.2*true_model.get_t()),
-        2*cos(4*true_model.get_t());
+        theta_ext << 1.3*sin(0.5*true_model.get_t()), 
+        -1.6*sin(1.2*true_model.get_t()),
+        2.3*cos(0.4*true_model.get_t());
         // theta_ext.setZero();
 
         u1.setZero();
@@ -132,10 +132,9 @@ int main()
     }
 
     x_ticks.push_back(0);
-    x_ticks.push_back(5);
     x_ticks.push_back(10);
-    x_ticks.push_back(15);
     x_ticks.push_back(20);
+    x_ticks.push_back(30);
 
     y_ticks.push_back(-4);
     y_ticks.push_back(-2);

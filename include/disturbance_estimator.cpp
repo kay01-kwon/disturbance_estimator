@@ -17,8 +17,8 @@ DistEst::DistEst()
     Gamma_Value.setIdentity();
     Gamma_Value *= 1000.0;
 
-    conv_fn_obj[0] = ConvFn(bound[0],1);
-    conv_fn_obj[1] = ConvFn(bound[1],1);
+    conv_fn_obj[0] = ConvFn(bound[0],10);
+    conv_fn_obj[1] = ConvFn(bound[1],10);
     
     gamma_prj_obj[1] = GammaPrj(Gamma_Value);
 
