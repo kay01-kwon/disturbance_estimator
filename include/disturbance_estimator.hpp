@@ -13,6 +13,8 @@ class DistEst{
 
     DistEst(Inertial_param& nominal_param);
 
+    void set_pos(mat31_t p_state, mat31_t p_hat);
+
     void set_vel(mat31_t v_state, mat31_t v_hat);
 
     void set_time(double t);
@@ -32,7 +34,7 @@ class DistEst{
     Inertial_param nominal_param_;
 
     quat_t q_tilde_;
-    mat31_t v_tilde_, w_tilde_;
+    mat31_t p_tilde_, v_tilde_, w_tilde_;
     mat31_t sigma_hat_, theta_hat_;
     mat31_t dsigma_hat_, dtheta_hat_;
     mat31_t sigma_hat_lpf_, theta_hat_lpf_;

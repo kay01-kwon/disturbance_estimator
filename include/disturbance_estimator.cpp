@@ -51,6 +51,11 @@ DistEst::DistEst(Inertial_param &nominal_param)
     
 }
 
+void DistEst::set_pos(mat31_t p_state, mat31_t p_hat)
+{
+    p_tilde_ = p_hat - p_state;
+}
+
 void DistEst::set_vel(mat31_t v_state, mat31_t v_hat)
 {
     v_tilde_ = v_hat - v_state;

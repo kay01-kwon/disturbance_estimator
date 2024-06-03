@@ -111,6 +111,7 @@ int main()
         ref_model.get_quat_from_ref_model(q_ref);
         ref_model.get_angular_vel_from_ref_model(w_ref);
 
+        estimator.set_pos(p_state, p_ref);
         estimator.set_vel(v_state, v_ref);
         estimator.set_angular_vel(w_state, w_ref,
         q_state, q_ref);
