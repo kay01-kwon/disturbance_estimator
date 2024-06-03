@@ -121,6 +121,10 @@ void Ref_Model::mu_comp2mu_hat(mat31_t mu_comp, mat31_t &mu_hat)
 {
     mat33_t C, R, skiew_sym;
     mat31_t q_vec;
+    double k_q, k_w;
+
+    k_q = 5.0;
+    k_w = 2.0;
 
     // Get rotation matrix from q_tilde_
     get_Rotm_from_quat(q_tilde_, R);
@@ -142,7 +146,7 @@ void Ref_Model::mu_comp2mu_hat(mat31_t mu_comp, mat31_t &mu_hat)
     - nominal_param_.J
     *skiew_sym
     *R.transpose()*w_state_
-    -5.0*q_vec - 2.0*w_tilde_;
+    -k_q*q_vec - k_w*w_tilde_;
 
 }
 

@@ -78,6 +78,7 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
     mat33_t R, P, P_transpose;
     mat33_t J_inv, J_inv_transpose;
     mat31_t q_vec;
+    double c = 1.0;
 
     J_inv = nominal_param_.J.inverse();
     J_inv_transpose = J_inv.transpose();
@@ -96,8 +97,6 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
     * R;
 
     P_transpose = P.transpose();
-
-    double c = 1.0;
 
     y_sigma = - v_tilde_;
     y_theta = - P_transpose * w_tilde_
