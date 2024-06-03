@@ -39,7 +39,7 @@ DistEst::DistEst(Inertial_param &nominal_param)
     mat33_t Gamma_Value;
 
     Gamma_Value.setIdentity();
-    Gamma_Value *= 1000.0;
+    Gamma_Value *= 500.0;
 
     conv_fn_obj[0] = ConvFn(bound[0],10);
     conv_fn_obj[1] = ConvFn(bound[1],10);

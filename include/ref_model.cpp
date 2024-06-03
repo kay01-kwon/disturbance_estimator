@@ -55,6 +55,17 @@ mat31_t w_state)
 
 }
 
+void Ref_Model::set_pos_vel(mat31_t p_state, mat31_t v_state)
+{
+    double k_p, k_d;
+    mat31_t p_tilde, v_tilde;
+    k_p = 5;
+    k_d = 2;
+
+    p_tilde = p_hat_ - p_state;
+    v_tilde = v_hat_ - v_state;
+}
+
 void Ref_Model::set_est_disturbance(mat31_t sigma_est, mat31_t theta_est)
 {
     sigma_hat_ = sigma_est;

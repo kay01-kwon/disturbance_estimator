@@ -61,5 +61,3 @@ The blue, orange, and green line denote the raw, L1 estimated disturbance and gr
 <img src="figures/estimator_test_result2.png"/>
 
 <img src="figures/estimator_test_result3.png"/>
-
-<img src="figures/estimator_test_result4.png"/>

@@ -24,6 +24,8 @@ class Ref_Model{
 
     void set_quat_angular_vel(quat_t q_state, mat31_t w_state);
 
+    void set_pos_vel(mat31_t p_state, mat31_t v_state);
+
     void set_est_disturbance(mat31_t sigma_est,
     mat31_t theta_est);
 
