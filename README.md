@@ -50,11 +50,23 @@ The test result of low pass filter is like the below.
 
 ## 3. L1 disturbance estimator
 
-The below picture shows test result of disturbance estimator.
+The parameter setup for $\Gamma$ is like the below:
+
+$\Gamma_{\sigma} = 1000 I_{3}$
+
+$\Gamma_{\theta} = 500 I_{3}.$
+
+$k_{\tilde{q}} = 5, k_{\tilde{\omega}} = 2, c =1.0$
+
+The below picture shows the test result of disturbance estimator.
+
+Herein, the translational and orientational disturbance is step-wise and sinusoidal, respectively.
 
 The first and second row represent the external force and moment estimation result, respectively.
 
 The blue, orange, and green line denote the raw, L1 estimated disturbance and ground truth, respectively.
+
+Since the blue signal tends to be noisy due to the large amount of $\Gamma$ parameter, the low pass filter is required to attenuate the noise.
 
 <img src="figures/estimator_test_result.png" />
 
