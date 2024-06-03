@@ -64,7 +64,7 @@ int main()
     sigma_est_lpf.setZero();
     
 
-    for(int i = 0; i < 3000; i++)
+    for(int i = 0; i < 30000; i++)
     {
         mat31_t p_state, v_state, w_state;
         quat_t q_state;

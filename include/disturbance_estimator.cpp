@@ -97,8 +97,11 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
 
     P_transpose = P.transpose();
 
+    double c = 1.0;
+
     y_sigma = - v_tilde_;
-    y_theta = - P_transpose * w_tilde_;
+    y_theta = - P_transpose * w_tilde_
+    -c*P_transpose*J_inv_transpose*q_vec;
 
     double f1, f2;
     mat31_t Df1, Df2;
