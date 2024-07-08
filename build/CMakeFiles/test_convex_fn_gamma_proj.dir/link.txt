@@ -1,1 +1,0 @@
-/usr/bin/c++  -g  -rdynamic CMakeFiles/test_convex_fn_gamma_proj.dir/src/test_convex_fn_gamma_proj.cpp.o CMakeFiles/test_convex_fn_gamma_proj.dir/include/gamma_proj.cpp.o CMakeFiles/test_convex_fn_gamma_proj.dir/include/convex_fn.cpp.o  -o test_convex_fn_gamma_proj 
