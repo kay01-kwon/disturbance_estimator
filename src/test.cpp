@@ -64,7 +64,7 @@ int main()
     sigma_est_lpf.setZero();
     
 
-    for(int i = 0; i < 5000; i++)
+    for(int i = 0; i < 800; i++)
     {
         mat31_t p_state, v_state, w_state;
         quat_t q_state;
@@ -86,19 +86,24 @@ int main()
 
         mat31_t u1, u2;
 
-        if(true_model.get_t() > 3)
-            sigma_ext << -1, 2, 0.5;
-        theta_ext << 1.3*sin(0.5*true_model.get_t()), 
-        -5*sin(1.2*true_model.get_t()),
-        2.3*cos(0.4*true_model.get_t());
+        // if(true_model.get_t() > 3)
+        //     sigma_ext << -1, 2, 0.5;
+        sigma_ext << 1*sin(1.0*true_model.get_t()),
+        2*sin(0.2*true_model.get_t()),
+        -2*cos(0.4*true_model.get_t());
+
+        theta_ext << 1*sin(0.7*true_model.get_t()), 
+        5*sin(1.2*true_model.get_t()),
+        -3*sin(0.4*true_model.get_t());
         // theta_ext.setZero();
 
         u1.setZero();
         u2.setZero();
-
+        
+        ref_model.set_est_disturbance(sigma_est, theta_est);
         ref_model.set_pos_vel(p_state, v_state);
         ref_model.set_quat_angular_vel(q_state, w_state);
-        ref_model.set_est_disturbance(sigma_est, theta_est);
+
         ref_model.apply_input(u1, u2);
         ref_model.set_time(true_model.get_t());
         ref_model.solve();

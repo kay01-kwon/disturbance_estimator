@@ -12,11 +12,13 @@ class True_model{
 
     public:
 
-    True_model();
+    True_model() = delete;
 
-    True_model(QuadModel model,
-    Inertial_param& inertial_param,
-    Aero_coeff& aero_coeff, double l);
+    True_model(const QuadModel& model,
+    const inertial_param_t& inertial_param,
+    const aero_coeff_t& aero_coeff, 
+    const double& l, 
+    const double& dt);
 
     /**
      * Apply control inputs
@@ -49,7 +51,7 @@ class True_model{
     private:
 
     // Inertial parameter
-    Inertial_param inertial_param_;
+    inertial_param_t inertial_param_;
 
     /**
      * Control input (Four thrust)
@@ -61,7 +63,7 @@ class True_model{
     */
 
     double l_;
-    Aero_coeff aero_coeff_;
+    aero_coeff_t aero_coeff_;
 
     /**
      * Thrust to wrench transformation matrix

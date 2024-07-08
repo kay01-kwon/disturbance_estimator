@@ -1,0 +1,47 @@
+[
+{
+  "directory": "/home/kay/Documents/research/estimator/build",
+  "command": "/usr/bin/c++   -I/home/kay/Documents/research/estimator/INCLUDE_DIRS -I/home/kay/Documents/research/estimator/include -I/usr/include/python3.8  -g   -std=gnu++11 -o CMakeFiles/test.dir/src/test.cpp.o -c /home/kay/Documents/research/estimator/src/test.cpp",
+  "file": "/home/kay/Documents/research/estimator/src/test.cpp"
+},
+{
+  "directory": "/home/kay/Documents/research/estimator/build",
+  "command": "/usr/bin/c++   -I/home/kay/Documents/research/estimator/INCLUDE_DIRS -I/home/kay/Documents/research/estimator/include -I/usr/include/python3.8  -g   -std=gnu++11 -o CMakeFiles/test.dir/include/tools.cpp.o -c /home/kay/Documents/research/estimator/include/tools.cpp",
+  "file": "/home/kay/Documents/research/estimator/include/tools.cpp"
+},
+{
+  "directory": "/home/kay/Documents/research/estimator/build",
+  "command": "/usr/bin/c++   -I/home/kay/Documents/research/estimator/INCLUDE_DIRS -I/home/kay/Documents/research/estimator/include -I/usr/include/python3.8  -g   -std=gnu++11 -o CMakeFiles/test.dir/include/config_read.cpp.o -c /home/kay/Documents/research/estimator/include/config_read.cpp",
+  "file": "/home/kay/Documents/research/estimator/include/config_read.cpp"
+},
+{
+  "directory": "/home/kay/Documents/research/estimator/build",
+  "command": "/usr/bin/c++   -I/home/kay/Documents/research/estimator/INCLUDE_DIRS -I/home/kay/Documents/research/estimator/include -I/usr/include/python3.8  -g   -std=gnu++11 -o CMakeFiles/test.dir/include/true_model.cpp.o -c /home/kay/Documents/research/estimator/include/true_model.cpp",
+  "file": "/home/kay/Documents/research/estimator/include/true_model.cpp"
+},
+{
+  "directory": "/home/kay/Documents/research/estimator/build",
+  "command": "/usr/bin/c++   -I/home/kay/Documents/research/estimator/INCLUDE_DIRS -I/home/kay/Documents/research/estimator/include -I/usr/include/python3.8  -g   -std=gnu++11 -o CMakeFiles/test.dir/include/ref_model.cpp.o -c /home/kay/Documents/research/estimator/include/ref_model.cpp",
+  "file": "/home/kay/Documents/research/estimator/include/ref_model.cpp"
+},
+{
+  "directory": "/home/kay/Documents/research/estimator/build",
+  "command": "/usr/bin/c++   -I/home/kay/Documents/research/estimator/INCLUDE_DIRS -I/home/kay/Documents/research/estimator/include -I/usr/include/python3.8  -g   -std=gnu++11 -o CMakeFiles/test.dir/include/convex_fn.cpp.o -c /home/kay/Documents/research/estimator/include/convex_fn.cpp",
+  "file": "/home/kay/Documents/research/estimator/include/convex_fn.cpp"
+},
+{
+  "directory": "/home/kay/Documents/research/estimator/build",
+  "command": "/usr/bin/c++   -I/home/kay/Documents/research/estimator/INCLUDE_DIRS -I/home/kay/Documents/research/estimator/include -I/usr/include/python3.8  -g   -std=gnu++11 -o CMakeFiles/test.dir/include/gamma_proj.cpp.o -c /home/kay/Documents/research/estimator/include/gamma_proj.cpp",
+  "file": "/home/kay/Documents/research/estimator/include/gamma_proj.cpp"
+},
+{
+  "directory": "/home/kay/Documents/research/estimator/build",
+  "command": "/usr/bin/c++   -I/home/kay/Documents/research/estimator/INCLUDE_DIRS -I/home/kay/Documents/research/estimator/include -I/usr/include/python3.8  -g   -std=gnu++11 -o CMakeFiles/test.dir/include/low_pass_filter.cpp.o -c /home/kay/Documents/research/estimator/include/low_pass_filter.cpp",
+  "file": "/home/kay/Documents/research/estimator/include/low_pass_filter.cpp"
+},
+{
+  "directory": "/home/kay/Documents/research/estimator/build",
+  "command": "/usr/bin/c++   -I/home/kay/Documents/research/estimator/INCLUDE_DIRS -I/home/kay/Documents/research/estimator/include -I/usr/include/python3.8  -g   -std=gnu++11 -o CMakeFiles/test.dir/include/disturbance_estimator.cpp.o -c /home/kay/Documents/research/estimator/include/disturbance_estimator.cpp",
+  "file": "/home/kay/Documents/research/estimator/include/disturbance_estimator.cpp"
+}
+]

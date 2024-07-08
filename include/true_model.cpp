@@ -1,25 +1,13 @@
 #include "true_model.hpp"
 
-True_model::True_model()
-{
-    t_ = 0;
-    dt_ = 0.01;
-    grav << 0, 0, -9.81;
-
-    cout<<"Default setup"<<endl;
-
-    model_config(model1);
-
-    inertial_param_.r_offset << 0, 0, 0;
-
-}
-
 True_model::True_model(
-QuadModel model, 
-Inertial_param& inertial_param,
-Aero_coeff& aero_coeff, double l):
+const QuadModel& model, 
+const inertial_param_t& inertial_param,
+const aero_coeff_t& aero_coeff, 
+const double& l,
+const double& dt):
 inertial_param_(inertial_param),
-aero_coeff_(aero_coeff), l_(l)
+aero_coeff_(aero_coeff), l_(l), dt_(dt)
 {
     t_ = 0;
     dt_ = 0.01;

@@ -39,11 +39,12 @@ DistEst::DistEst(Inertial_param &nominal_param)
     mat33_t Gamma_Value;
 
     Gamma_Value.setIdentity();
-    Gamma_Value *= 500.0;
+    Gamma_Value *= 1000.0;
 
     conv_fn_obj[0] = ConvFn(bound[0],10);
-    conv_fn_obj[1] = ConvFn(bound[1],10);
-    
+    conv_fn_obj[1] = ConvFn(bound[1],1);
+
+    gamma_prj_obj[0] = GammaPrj(Gamma_Value);
     gamma_prj_obj[1] = GammaPrj(Gamma_Value);
 
     lpf_obj[0] = Lpf(2.0);
@@ -133,12 +134,6 @@ void DistEst::get_est_filtered(mat31_t &sigma_hat_lpf, mat31_t &theta_hat_lpf)
     lpf_obj[0].set_time(curr_time_);
     lpf_obj[0].get_filtered_vector(sigma_hat_lpf);
 
-    mat33_t R;
-    quat_t q_tilde_unit;
-    quat2unit_quat(q_tilde_,q_tilde_unit);
-
-    get_Rotm_from_quat(q_tilde_unit,R);
-
     lpf_obj[1].apply_input(theta_hat_);
     lpf_obj[1].set_time(curr_time_);
     lpf_obj[1].get_filtered_vector(theta_hat_lpf);
@@ -162,15 +157,12 @@ void DistEst::solve()
 {
     dt_ = curr_time_ - prev_time_;
 
-    rk4.do_step(
-        std::bind(
-            &DistEst::system_dynamics,
-            this,
-            std::placeholders::_1,
-            std::placeholders::_2,
-            std::placeholders::_3
-        ), s_, prev_time_, dt_
-    );
+    rk4.do_step([this] 
+    (const mat61_t& s, mat61_t& dsdt, double t)
+    {
+        this->DistEst::system_dynamics(s, dsdt, t);
+    },
+    s_, prev_time_, dt_);
 
     for(int i =  0; i < 3; i++)
     {
@@ -183,13 +175,11 @@ void DistEst::solve()
 
 void DistEst::system_dynamics(const mat61_t &s, mat61_t &dsdt, double t)
 {
-    mat61_t v_in;
     
     for(int i = 0; i < 3; i++)
     {
-        v_in(i) = dsigma_hat_(i);
-        v_in(i + 3) = dtheta_hat_(i);
+        dsdt(i) = dsigma_hat_(i);
+        dsdt(i + 3) = dtheta_hat_(i);
     }
 
-    dsdt = v_in;
 }

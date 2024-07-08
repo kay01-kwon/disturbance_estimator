@@ -46,12 +46,12 @@ typedef Quaternion<double> quat_t;
 typedef struct Aero_coeff_{
     double moment_coeff;
     double lift_coeff;
-} Aero_coeff;
+} aero_coeff_t;
 
 typedef struct Inertial_param_{
     double m;
     mat33_t J;
     mat31_t r_offset;
-} Inertial_param;
+} inertial_param_t;
 
 #endif

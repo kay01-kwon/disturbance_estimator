@@ -136,8 +136,8 @@ void Ref_Model::mu_comp2mu_hat(mat31_t mu_comp, mat31_t &mu_hat)
     mat31_t q_vec;
     double k_q, k_w;
 
-    k_q = 5.0;
-    k_w = 2.0;
+    k_q = 10.0;
+    k_w = 3.0;
 
     // Get rotation matrix from q_tilde_
     get_Rotm_from_quat(q_tilde_, R);
