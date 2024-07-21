@@ -17,8 +17,8 @@ using std::map;
 
 string file_name;
 
-Inertial_param inertial_param;
-Aero_coeff aero_coeff;
+inertial_param_t inertial_param;
+aero_coeff_t aero_coeff;
 double arm_length;
 
 Config_Read* config_read_ptr;

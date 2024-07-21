@@ -11,6 +11,7 @@ Ref_Model::Ref_Model()
     s_hat_.setZero();
     s_hat_(6) = 1.0;
     dsdt_hat_.setZero();
+    q_hat_.setIdentity();
 
     grav.setZero();
     grav(2) = -9.81;
@@ -18,7 +19,7 @@ Ref_Model::Ref_Model()
     curr_time_ = prev_time_ = dt_ = 0;
 }
 
-Ref_Model::Ref_Model(Inertial_param &nominal_param)
+Ref_Model::Ref_Model(inertial_param_t &nominal_param)
 :nominal_param_(nominal_param)
 {
     u_hat_.setZero();
@@ -27,6 +28,8 @@ Ref_Model::Ref_Model(Inertial_param &nominal_param)
     s_hat_.setZero();
     s_hat_(6) = 1.0;
     dsdt_hat_.setZero();
+
+    q_hat_.setIdentity();
 
     grav.setZero();
     grav(2) = -9.81;
@@ -43,12 +46,23 @@ void Ref_Model::apply_input(mat31_t u_comp, mat31_t mu_comp)
 void Ref_Model::set_quat_angular_vel(quat_t q_state,
 mat31_t w_state)
 {
+    for(size_t i = 0; i < w_state.size(); i++)
+        s_hat_(i+10) = w_state(i);
+
+    s_hat_(6) = q_state.w();
+    s_hat_(7) = q_state.x();
+    s_hat_(8) = q_state.y();
+    s_hat_(9) = q_state.z();
+     
+
     // Get the current state of quaternion
     // and then compute the tilde of quaternion.
     quat_t q_state_conj;
 
     conjugate(q_state, q_state_conj);
     otimes(q_state_conj, q_hat_, q_tilde_);
+
+    assert(isnan(q_hat_.w()) == false);
 
     // Get the current angular velocity
     w_state_ = w_state;
@@ -59,8 +73,12 @@ void Ref_Model::set_pos_vel(mat31_t p_state, mat31_t v_state)
 {
     double k_p, k_d;
     mat31_t p_tilde, v_tilde;
-    k_p = 5;
-    k_d = 2;
+
+    for(size_t i = 0; i < p_state.size(); i++)
+    {
+        s_hat_(i) = p_state(i);
+        s_hat_(i+3) = v_state(i);
+    }
 
     p_tilde = p_hat_ - p_state;
     v_tilde = v_hat_ - v_state;
@@ -82,6 +100,9 @@ void Ref_Model::set_time(double t)
 void Ref_Model::solve()
 {
     dt_ = curr_time_ - prev_time_;
+
+    assert(isnan(s_hat_(6)) == false);
+
     rk4.do_step(
         std::bind(
         &Ref_Model::ref_dynamics,
@@ -100,13 +121,25 @@ void Ref_Model::solve()
         w_hat_(i) = s_hat_(i+10);
     }
 
-    q_hat_.w() = s_hat_(6);
-    q_hat_.x() = s_hat_(7);
-    q_hat_.y() = s_hat_(8);
-    q_hat_.z() = s_hat_(9);
+    quat_t q_raw;
 
+    q_raw.w() = s_hat_(6);
+    q_raw.x() = s_hat_(7);
+    q_raw.y() = s_hat_(8);
+    q_raw.z() = s_hat_(9);
 
-    prev_time_ = curr_time_;
+    quat2unit_quat(q_raw, q_hat_);
+
+    cout << q_hat_.w() 
+    <<" " << q_hat_.x() << " " << q_hat_.y()
+    << " " << q_hat_.z()<<endl;
+
+    // cout<< "q hat: " << 
+    // q_hat_.w() << " " << q_hat_.x() << " " << q_hat_.y() 
+    // << " " << q_hat_.x() << endl;
+    // prev_time_ = curr_time_;
+
+    assert(isnan(q_hat_.w()) == false);
 
 }
 
@@ -136,8 +169,8 @@ void Ref_Model::mu_comp2mu_hat(mat31_t mu_comp, mat31_t &mu_hat)
     mat31_t q_vec;
     double k_q, k_w;
 
-    k_q = 10.0;
-    k_w = 3.0;
+    k_q = 0.0;
+    k_w = 0.0;
 
     // Get rotation matrix from q_tilde_
     get_Rotm_from_quat(q_tilde_, R);
@@ -155,7 +188,7 @@ void Ref_Model::mu_comp2mu_hat(mat31_t mu_comp, mat31_t &mu_hat)
     vec2skiew(w_tilde_, skiew_sym);
 
     mu_hat = C
-    *(mu_comp + R*theta_hat_)
+    *(mu_comp + R*theta_hat_ + w_state_.cross(nominal_param_.J*w_state_))
     - nominal_param_.J
     *skiew_sym
     *R.transpose()*w_state_

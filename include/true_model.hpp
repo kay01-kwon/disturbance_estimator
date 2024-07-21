@@ -12,7 +12,7 @@ class True_model{
 
     public:
 
-    True_model() = delete;
+    True_model() = default;
 
     True_model(const QuadModel& model,
     const inertial_param_t& inertial_param,
@@ -23,14 +23,14 @@ class True_model{
     /**
      * Apply control inputs
     */
-    void apply_control_input(mat41_t& rpm);
+    void set_control_input(const mat41_t& rpm);
 
     /**
      * Apply disturbances
     */
-    void apply_disturbance(
-        mat31_t& sigma_ext, 
-        mat31_t& theta_ext);
+    void set_disturbance(
+        const mat31_t& sigma_ext, 
+        const mat31_t& theta_ext);
 
     void do_rk4();
 

@@ -17,16 +17,16 @@ class Config_Read{
 
     Config_Read(string& file_name);
 
-    void get_param(Inertial_param& inertial_param,
-    Aero_coeff& aero_coeff, double& arm_length);
+    void get_param(inertial_param_t& inertial_param,
+    aero_coeff_t& aero_coeff, double& arm_length);
 
     private:
 
     string file_name_;
 
-    Inertial_param inertial_param_;
+    inertial_param_t inertial_param_;
 
-    Aero_coeff aero_coeff_;
+    aero_coeff_t aero_coeff_;
 
     double l_;
 

@@ -27,25 +27,28 @@ DistEst::DistEst()
 
 }
 
-DistEst::DistEst(Inertial_param &nominal_param)
+DistEst::DistEst(inertial_param_t &nominal_param)
 :nominal_param_(nominal_param)
 {
     mat31_t bound[2];
     initial_variables();
 
     bound[0] << 5, 5, 5;
-    bound[1] << 10, 10, 10;
+    bound[1] << 1, 1, 1;
 
-    mat33_t Gamma_Value;
+    mat33_t Gamma_Value1, Gamma_Value2;
 
-    Gamma_Value.setIdentity();
-    Gamma_Value *= 1000.0;
+    Gamma_Value1.setIdentity();
+    Gamma_Value2.setIdentity();
+
+    Gamma_Value1 *= 1000.0;
+    Gamma_Value2 *= 0.001;
 
     conv_fn_obj[0] = ConvFn(bound[0],10);
     conv_fn_obj[1] = ConvFn(bound[1],1);
 
-    gamma_prj_obj[0] = GammaPrj(Gamma_Value);
-    gamma_prj_obj[1] = GammaPrj(Gamma_Value);
+    gamma_prj_obj[0] = GammaPrj(Gamma_Value1);
+    gamma_prj_obj[1] = GammaPrj(Gamma_Value2);
 
     lpf_obj[0] = Lpf(2.0);
     lpf_obj[1] = Lpf(2.0);
@@ -84,7 +87,7 @@ void DistEst::get_est_raw(mat31_t &sigma_est, mat31_t &theta_est)
     mat33_t R, P, P_transpose;
     mat33_t J_inv, J_inv_transpose;
     mat31_t q_vec;
-    double c = 1.0;
+    double c = 0.0;
 
     J_inv = nominal_param_.J.inverse();
     J_inv_transpose = J_inv.transpose();

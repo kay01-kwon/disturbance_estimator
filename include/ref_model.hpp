@@ -13,7 +13,7 @@ class Ref_Model{
 
     Ref_Model();
 
-    Ref_Model(Inertial_param& nominal_param);
+    Ref_Model(inertial_param_t& nominal_param);
 
     /**
      * Apply inputs
@@ -50,7 +50,7 @@ class Ref_Model{
 
     private:
 
-    Inertial_param nominal_param_;
+    inertial_param_t nominal_param_;
 
     mat31_t u_hat_, mu_hat_;
 

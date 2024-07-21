@@ -24,9 +24,10 @@ int main()
     /**
      * Load true model
     */
+    double dt = 0.01;
     model = model1;
     true_model = True_model(model, 
-    inertial_param, aero_coeff, arm_length);
+    inertial_param, aero_coeff, arm_length, dt);
     ref_model = Ref_Model(inertial_param);
     estimator = DistEst(inertial_param);
 
@@ -62,14 +63,25 @@ int main()
     sigma_est.setZero();
     theta_est_lpf.setZero();
     sigma_est_lpf.setZero();
-    
 
-    for(int i = 0; i < 800; i++)
+    mat31_t p_ref, v_ref, w_ref;
+    quat_t q_ref;    
+
+    mat31_t p_state_prev, v_state_prev;
+    quat_t q_state_prev;
+    mat31_t w_state_prev;
+
+    p_state_prev.setZero();
+    v_state_prev.setZero();
+    q_state_prev.setIdentity();
+    w_state_prev.setZero();
+
+    for(int i = 0; i < 2500; i++)
     {
         mat31_t p_state, v_state, w_state;
         quat_t q_state;
-        true_model.apply_control_input(u);
-        true_model.apply_disturbance(sigma_ext, theta_ext);
+        true_model.set_control_input(u);
+        true_model.set_disturbance(sigma_ext, theta_ext);
         true_model.do_rk4();
 
         true_model.get_pos_from_state(p_state);
@@ -89,27 +101,24 @@ int main()
         // if(true_model.get_t() > 3)
         //     sigma_ext << -1, 2, 0.5;
         sigma_ext << 1*sin(1.0*true_model.get_t()),
-        2*sin(0.2*true_model.get_t()),
-        -2*cos(0.4*true_model.get_t());
+        1*sin(0.2*true_model.get_t()),
+        -1*cos(0.4*true_model.get_t());
 
         theta_ext << 1*sin(0.7*true_model.get_t()), 
-        5*sin(1.2*true_model.get_t()),
-        -3*sin(0.4*true_model.get_t());
+        0.8*sin(1.2*true_model.get_t()),
+        -0.5*sin(0.4*true_model.get_t());
         // theta_ext.setZero();
 
         u1.setZero();
         u2.setZero();
         
         ref_model.set_est_disturbance(sigma_est, theta_est);
-        ref_model.set_pos_vel(p_state, v_state);
-        ref_model.set_quat_angular_vel(q_state, w_state);
+        ref_model.set_pos_vel(p_state_prev, v_state_prev);
+        ref_model.set_quat_angular_vel(q_state_prev, w_state_prev);
 
         ref_model.apply_input(u1, u2);
         ref_model.set_time(true_model.get_t());
         ref_model.solve();
-
-        mat31_t p_ref, v_ref, w_ref;
-        quat_t q_ref;
 
         ref_model.get_pos_from_ref_model(p_ref);
         ref_model.get_vel_from_ref_model(v_ref);
@@ -125,6 +134,11 @@ int main()
         estimator.get_est_raw(sigma_est, theta_est);
         estimator.get_est_filtered(sigma_est_lpf, theta_est_lpf);
 
+        p_state_prev = p_state;
+        v_state_prev = v_state;
+        q_state_prev = q_state;
+        w_state_prev = w_state;
+
         demux_vec3(v_ref, vx_ref, vy_ref, vz_ref);
         demux_quat(q_ref, qw_ref, qx_ref, qy_ref, qz_ref);
         demux_vec3(w_ref, wx_ref, wy_ref, wz_ref);
@@ -139,14 +153,14 @@ int main()
     }
 
     x_ticks.push_back(0);
-    x_ticks.push_back(25);
-    x_ticks.push_back(50);
+    x_ticks.push_back(5);
+    x_ticks.push_back(10);
 
-    y_ticks.push_back(-4);
-    y_ticks.push_back(-2);
-    y_ticks.push_back(0.0);
-    y_ticks.push_back(2.0);
-    y_ticks.push_back(4);
+    y_ticks.push_back(-1.2);
+    y_ticks.push_back(-0.6);
+    y_ticks.push_back(0);
+    y_ticks.push_back(0.6);
+    y_ticks.push_back(1.2);
 
     plt::figure_size(3500,2000);
 

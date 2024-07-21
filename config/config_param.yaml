@@ -2,12 +2,12 @@ inertial_param:
     mass:
         m: 1
     MOI:
-        Jxx: 1
+        Jxx: 0.007
         Jxy: 0.00000
         Jxz: 0.00000
-        Jyy: 1
+        Jyy: 0.007
         Jyz: 0.00000
-        Jzz: 1
+        Jzz: 0.012
     offset:
         x: 0.
         y: 0.

@@ -131,7 +131,7 @@ double signum(double num)
     return num > 0 ? 1.0:-1.0;
 }
 
-void print_params(Inertial_param& param1, Aero_coeff& param2, double& param3)
+void print_params(inertial_param_t& param1, aero_coeff_t& param2, double& param3)
 {
     cout<<"Inertial Parameter setup"<<endl;
 

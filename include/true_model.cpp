@@ -16,7 +16,7 @@ aero_coeff_(aero_coeff), l_(l), dt_(dt)
     model_config(model);
 }
 
-void True_model::apply_control_input(mat41_t& rpm)
+void True_model::set_control_input(const mat41_t& rpm)
 {
     mat61_t wrench;
     mat41_t T;
@@ -42,9 +42,9 @@ void True_model::apply_control_input(mat41_t& rpm)
 
 }
 
-void True_model::apply_disturbance(
-    mat31_t& sigma_ext,
-    mat31_t& theta_ext)
+void True_model::set_disturbance(
+    const mat31_t& sigma_ext,
+    const mat31_t& theta_ext)
 {
     sigma_ext_ = sigma_ext;
     M_ += theta_ext;

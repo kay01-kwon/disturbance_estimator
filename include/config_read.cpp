@@ -14,8 +14,8 @@ file_name_(file_name)
 
 }
 
-void Config_Read::get_param(Inertial_param& inertial_param,
-Aero_coeff& aero_coeff, double& arm_length)
+void Config_Read::get_param(inertial_param_t& inertial_param,
+aero_coeff_t& aero_coeff, double& arm_length)
 {
     inertial_param = inertial_param_;
     aero_coeff = aero_coeff_;

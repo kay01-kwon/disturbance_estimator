@@ -11,7 +11,7 @@ class DistEst{
 
     DistEst();
 
-    DistEst(Inertial_param& nominal_param);
+    DistEst(inertial_param_t& nominal_param);
 
     void set_pos(mat31_t p_state, mat31_t p_hat);
 
@@ -31,7 +31,7 @@ class DistEst{
 
     private:
     
-    Inertial_param nominal_param_;
+    inertial_param_t nominal_param_;
 
     quat_t q_tilde_;
     mat31_t p_tilde_, v_tilde_, w_tilde_;
